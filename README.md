@@ -1,6 +1,6 @@
 # Hello, I'm Bagus Erwanto 👋🏻
-| `ocean_dark` ![ocean_dark][ocean_dark] | `city_lights` ![city_lights][city_lights] | `github_dark` ![github_dark][github_dark] |
-[github_dark]: https://github-readme-stats.vercel.app/api?username=anuraghazra&show_icons=true&hide=contribs,prs&cache_seconds=86400&theme=github_dark
+| `github_dark` ![github_dark][github_dark] |
+[github_dark]: https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&hide=contribs,prs&cache_seconds=86400&theme=github_dark
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-Intermediate-yellow)
 ![PHP](https://img.shields.io/badge/PHP-Intermediate-lightblue)
