@@ -1,6 +1,7 @@
 # Hello, I'm Bagus Erwanto 👋🏻
-| `github_dark` ![github_dark][github_dark] |
-[[github_dark]: https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&hide=contribs,prs&cache_seconds=86400&theme=github_dark](https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&hide=contribs,prs&cache_seconds=86400&theme=github_dark)
+
+ <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&include_all_commits=true&theme=github_dark&hide_border=true" alt="Bagus github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=volumeee&layout=compact&theme=github_dark&hide_border=true" /></a> |
+| ------------- | ------------- |
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-Intermediate-yellow)
 ![PHP](https://img.shields.io/badge/PHP-Intermediate-lightblue)
