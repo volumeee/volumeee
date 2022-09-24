@@ -1,7 +1,7 @@
 # Hello, I'm Bagus Erwanto 👋🏻
 
  <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&include_all_commits=true&theme=github_dark&hide_border=true" alt="Bagus github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=volumeee&layout=compact&theme=github_dark&hide_border=true" /></a> |
-
+| ------------- | ------------- |
 <p align="center">
     <a href="#">
       <img alt="Javascript" src="https://img.shields.io/badge/JavaScript-Intermediate-yellow" />
