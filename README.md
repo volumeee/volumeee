@@ -31,4 +31,4 @@ Web Designer & Web Developer located in Indonesia, Creating design & programming
 - 🌱 I’m currently learning **Tailwind**, **Laravel** and **Javascript**
 - ⚙️ Mastering: `.html`,`.css`,`.js`,`.php`
 - 👯 I’m looking to collaborate on **Open Source** projects
-- 💬 I'm mostly active within the **Instagram**, **TikTok** and **Youtube** communities
+- 💬 I'm mostly active with in the **Instagram**, **TikTok** and **Youtube** communities
