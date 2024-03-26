@@ -14,10 +14,9 @@
   
 
 
-Web Designer & Web Developer located in Indonesia, Creating design & programming contents in [Jago_it](https://www.instagram.com/jago_it/ "Jago_it").
 
 - 🔭 I’m currently studying **Software Engineering** at Duta Bangsa University
 - 🌱 I’m currently learning **Tailwind**, **Python** and **Javascript**
-- ⚙️ Mastering: `.html`,`.css`,`.js`,`.php`
+- ⚙️ Mastering: `.html`,`.css`,`.js`,`.react native`
 - 👯 I’m looking to collaborate on **Open Source** projects
 - 💬 I'm mostly active with in the **Instagram**, **TikTok** and **Youtube** communities
