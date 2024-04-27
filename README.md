@@ -1,4 +1,4 @@
-# Hello, I'm Bagus Erwanto 👋🏻
+# Hello, I'm Bagus Erwanto Mobile Developer👋🏻
 
 
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bagus-erwanto-213243172/) [![TikTok](https://img.shields.io/badge/TikTok-%23000000.svg?logo=TikTok&logoColor=white)](h) [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)]() 
@@ -16,7 +16,7 @@
 
 
 - 🔭 I’m currently studying **Software Engineering** at Duta Bangsa University
-- 🌱 I’m currently learning **Tailwind**, **Python** and **Javascript**
-- ⚙️ Mastering: `.html`,`.css`,`.js`,`.react native`
+- 🌱 I’m currently learning **React Native**, **Kotlin** and **Flutter**
+- ⚙️ Mastering: `.js`,`.css`,`.kotlin`,`.react native`
 - 👯 I’m looking to collaborate on **Open Source** projects
 - 💬 I'm mostly active with in the **Instagram**, **TikTok** and **Youtube** communities
