@@ -1,8 +1,8 @@
 <h2> Hi, I'm Bagus Erwanto! <img src="https://emojis.slackmojis.com/emojis/images/1531849430/4246/blob-sunglasses.gif?1531849430" width="30"/></h2>
 <img align='right' src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="230">
 
-[![Linkedin: Bagus Erwanto](https://img.shields.io/badge/-thaianebraga-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/baguserwanto/)](https://www.linkedin.com/in/thaianebraga/)
-[![GitHub Volumeee](https://img.shields.io/github/followers/thaiane?label=follow&style=social)](https://github.com/volumeee)
+[![Linkedin: Bagus Erwanto](https://img.shields.io/badge/-baguserwanto-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/baguserwanto/)](https://www.linkedin.com/in/thaianebraga/)
+[![GitHub Volumeee](https://img.shields.io/github/followers/volumeee?label=follow&style=social)](https://github.com/volumeee)
 
 
 ### <img src="https://media.giphy.com/media/VgCDAzcKvsR6OM0uWg/giphy.gif" width="50"> A little more about me...  
