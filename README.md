@@ -22,7 +22,7 @@ const volumeee = {
         devOps: ["AWS", "Docker🐳", "Route53", "Nginx"],
         databases: ["mongodb", "MySql", "sqlite"],
         misc: ["Firebase", "Socket.IO", "selenium", "open-cv", "php", "SuiteApp","Mqtt"],
-        Ml: ["roboflow","huggingface","kaggle","teacheble machine"]
+        Ml: ["roboflow","huggingface","kaggle","teachable machine"]
     },
     architecture: ["Serverless Architecture", "Progressive web applications", "MVVM"],
     currentFocus: "No Focus point at this time",
