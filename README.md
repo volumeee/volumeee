@@ -1,22 +1,37 @@
-# Hello, I'm Bagus Erwanto Mobile Developer👋🏻
+<h2> Hi, I'm Bagus Erwanto! <img src="https://media.giphy.com/media/mGcNjsfWAjY5AEZNw6/giphy.gif" width="50"></h2>
+<img align='right' src="https://media.giphy.com/media/ieyl9zmCjO4b4t6qoY/giphy.gif" width="230">
+<p><em>Mobile Developer at <a href="http://www.unb.br">Namex Planet</a><img src="https://media.giphy.com/media/fYSnHlufseco8Fh93Z/giphy.gif" width="30">
+</em></p>
+
+[![Linkedin: Bagus Erwanto](https://img.shields.io/badge/-thaianebraga-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/baguserwanto/)](https://www.linkedin.com/in/thaianebraga/)
+[![GitHub Volumeee](https://img.shields.io/github/followers/thaiane?label=follow&style=social)](https://github.com/volumeee)
 
 
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/bagus-erwanto-213243172/) [![TikTok](https://img.shields.io/badge/TikTok-%23000000.svg?logo=TikTok&logoColor=white)](h) [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)]() 
+### <img src="https://media.giphy.com/media/VgCDAzcKvsR6OM0uWg/giphy.gif" width="50"> A little more about me...  
 
+```javascript
+const volumeee = {
+    pronouns: "He" | "Him",
+    code: ["Javascript", "Kotlin", "Java", "React Native"],
+    askMeAbout: ["mobile dev", "iot", "web dev", "ui ux"],
+    technologies: {
+        backEnd: {
+            js: ["Node", "Fastify", "Express"],
+        },
+        mobileApp: {
+            native: ["Android Development"]
+        },
+        devOps: ["AWS", "Docker🐳", "Route53", "Nginx"],
+        databases: ["mongodb", "MySql", "sqlite"],
+        misc: ["Firebase", "Socket.IO", "selenium", "open-cv", "php", "SuiteApp","Mqtt"],
+        Ml: ["roboflow","huggingface","kaggle","teacheble machine"]
+    },
+    architecture: ["Serverless Architecture", "Progressive web applications", "MVVM"],
+    currentFocus: "No Focus point at this time",
+    funFact: "A good program is not a finished program"
+};
+```
 
- <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api?username=volumeee&show_icons=true&include_all_commits=true&theme=github_dark&hide_border=true" alt="Bagus github stats" /></a> | <a href="https://github.com/anuraghazra/github-readme-stats"><img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=volumeee&layout=compact&theme=github_dark&hide_border=true" /></a> |
-| ------------- | ------------- |
-<p align="center">
-      
-![REACTNATIVE](https://img.shields.io/badge/react-native-%23F24E1E.svg?style=flat&logo=react&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E) ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=flat&logo=php&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=ffdd54) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=flat&logo=vercel&logoColor=white) ![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=flat&logo=bootstrap&logoColor=white) ![Code-Igniter](https://img.shields.io/badge/CodeIgniter-%23EF4223.svg?style=flat&logo=codeIgniter&logoColor=white) ![MongoDB](https://img.shields.io/badge/mongodb-3DDC84?style=flate&logo=mongoDB&logoColor=white) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=flat&logo=express&logoColor=%2361DAFB) ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=flat&logo=laravel&logoColor=white) ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=flat&logo=npm&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=flat&logo=node.js&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=flat&logo=mysql&logoColor=white) ![Photoshop](https://aleen42.github.io/badges/src/photoshop.svg) 	![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=flat&logo=figma&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=flat&logo=Canva&logoColor=white) ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white) ![Arduino](https://img.shields.io/badge/-Arduino-%23Clojure?style=flat&logo=arduino&logoColor=white) ![React](https://img.shields.io/badge/react-%2307405e.svg?style=flat&logo=react&logoColor=white) ![Git](https://img.shields.io/badge/Git-%23EF4223.svg?style=flat&logo=git&logoColor=white) ![Vite](https://img.shields.io/badge/vite-3670A0?style=flat&logo=vite&logoColor=ffdd54) ![Android Studio](https://img.shields.io/badge/Android-3DDC84?style=flate&logo=android&logoColor=white)
-  
-</p>
-  
+<img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60"> <em><b>I love connecting with different people</b> so if you want to say <b>hi, I'll be happy to meet you more!</b> :)</em>
 
-
-
-- 🔭 I’m currently studying **Software Engineering** at Duta Bangsa University
-- 🌱 I’m currently learning **React Native**, **Kotlin** and **Flutter**
-- ⚙️ Mastering: `.js`,`.css`,`.kotlin`,`.react native`
-- 👯 I’m looking to collaborate on **Open Source** projects
-- 💬 I'm mostly active with in the **Instagram**, **TikTok** and **Youtube** communities
+---
