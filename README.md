@@ -9,7 +9,7 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 ## 🛠 &nbsp;Technologies & Tools
 
 **Frontend:**
-- JavaScript, TypeScript, React Native, HTML5, CSS, Styled Components
+- JavaScript, TypeScript, React Native, Kotlin, Java, HTML5, CSS, Styled Components
 
 **Backend:**
 - Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL
