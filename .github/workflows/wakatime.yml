@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Update README with WakaTime stats
         uses: athul/waka-readme@master
         with:
