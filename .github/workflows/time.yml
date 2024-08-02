@@ -1,0 +1,22 @@
+name: Update README
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Setiap 5 menit
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Update README
+        run: |
+          current_time=$(date '+%Y-%m-%d %H:%M:%S')
+          echo "## Jam Saat Ini\n\n$current_time" > timestamp.txt
+          git config --global user.name 'github-actions'
+          git config --global user.email 'actions@github.com'
+          git add timestamp.txt
+          git commit -m 'Update timestamp'
+          git push
