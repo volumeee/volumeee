@@ -42,6 +42,7 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 </p>
 
 <!--START_SECTION:waka-->
+
 <!--END_SECTION:waka-->
 
 ## 🏆 GitHub Profile Trophy
