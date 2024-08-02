@@ -10,11 +10,16 @@ jobs:
     name: WakaReadme Dev Metrics Update
     runs-on: ubuntu-latest
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
       - name: Print environment variables
         run: |
           echo "WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}"
           echo "GH_TOKEN: ${{ secrets.GH_TOKEN }}"
-      - uses: athul/waka-readme@master
+
+      - name: Update WakaReadme
+        uses: athul/waka-readme@master
         with:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           SHOW_TITLE: true
