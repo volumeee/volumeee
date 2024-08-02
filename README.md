@@ -41,6 +41,8 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
   <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>
 </p>
 
+ <!--START_SECTION:waka-->
+<!--END_SECTION:waka-->
 
 ## 🏆 GitHub Profile Trophy
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
