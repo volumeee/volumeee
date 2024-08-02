@@ -1,35 +1,45 @@
-<h2> Hi, I'm Bagus Erwanto! <img src="https://emojis.slackmojis.com/emojis/images/1531849430/4246/blob-sunglasses.gif?1531849430" width="30"/></h2>
-<img align='right' src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeWhodGk3bzJzMW05eHlvM3hwZGozOHk1Ymt5enB6aDdqYTFwc2xmMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/i4MAH84pqe2m2aVojc/giphy.gif" width="230">
+## Hi 👋, I'm Bagus Erwanto!
 
-[![Linkedin: Bagus Erwanto](https://img.shields.io/badge/-baguserwanto-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/baguserwanto/)](https://www.linkedin.com/in/baguserwanto/)
+[![Linkedin](https://img.shields.io/badge/-baguserwanto-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/baguserwanto/)
 [![GitHub Volumeee](https://img.shields.io/github/followers/volumeee?label=follow&style=social)](https://github.com/volumeee)
+![Visitor](https://komarev.com/ghpvc/?username=baguserwanto&label=Visitor&color=2bbc8a)
+
+Bagus is a passionate Software Engineer specializing in mobile app development and backend services. With expertise in JavaScript and TypeScript, he is dedicated to building efficient and scalable applications. When not coding, Bagus enjoys connecting with the tech community and exploring new technologies.
+
+## 🛠 &nbsp;Technologies & Tools
+
+**Frontend:**
+- JavaScript, TypeScript, React Native, HTML5, CSS, Styled Components
+
+**Backend:**
+- Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL
+
+**DevOps:**
+- Docker, CI/CD, GitHub Actions, Vercel, Digital Ocean
+
+<p align="left">
+  <!-- Frontend -->
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
+  <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="40" height="40"/> 
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>
+  
+  <!-- Backend -->
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/>
+  <img src="https://www.vectorlogo.zone/logos/supabase/supabase-icon.svg" alt="supabase" width="40" height="40"/>
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/>
+  
+  <!-- DevOps -->
+  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/>
+  <img src="https://www.vectorlogo.zone/logos/github/github-icon.svg" alt="github" width="40" height="40"/>
+  <img src="https://www.vectorlogo.zone/logos/vercel/vercel-icon.svg" alt="vercel" width="40" height="40"/>
+  <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>
+</p>
 
 
-### <img src="https://media.giphy.com/media/VgCDAzcKvsR6OM0uWg/giphy.gif" width="50"> A little more about me...  
+## 🏆 GitHub Profile Trophy
+<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
-```javascript
-const volumeee = {
-    pronouns: "He" | "Him",
-    code: ["Javascript", "Kotlin", "Java", "React Native"],
-    askMeAbout: ["mobile dev", "iot", "web dev", "ui ux"],
-    technologies: {
-        backEnd: {
-            js: ["Node", "Fastify", "Express"],
-        },
-        mobileApp: {
-            native: ["Android Development"]
-        },
-        devOps: ["AWS", "Docker🐳", "Route53", "Nginx"],
-        databases: ["mongodb", "MySql", "sqlite"],
-        misc: ["Firebase", "Socket.IO", "selenium", "open-cv", "php", "SuiteApp","Mqtt"],
-        Ml: ["roboflow","huggingface","kaggle","teachable machine"]
-    },
-    architecture: ["Serverless Architecture", "Progressive web applications", "MVVM"],
-    currentFocus: "No Focus point at this time",
-    funFact: "A good program is not a finished program"
-};
-```
-
-<img src="https://media.giphy.com/media/LnQjpWaON8nhr21vNW/giphy.gif" width="60"> <em><b>I love connecting with different people</b> so if you want to say <b>hi, I'll be happy to meet you more!</b> :)</em>
-
----
+<sub>Credit: Bagus Erwanto</sub>
