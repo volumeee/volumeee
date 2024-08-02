@@ -1,7 +1,9 @@
 ## Hi 👋, I'm Bagus Erwanto!
 
 [![Linkedin](https://img.shields.io/badge/-baguserwanto-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/baguserwanto/)
-[![GitHub Volumeee](https://img.shields.io/github/followers/volumeee?label=follow&style=social)](https://github.com/volumeee)
+[![Instagram](https://img.shields.io/badge/-baguserwanto-e4405f?style=flat&logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/)
+[![Threads](https://img.shields.io/badge/-@baguserwanto-000000?style=flat&logo=threads&logoColor=white)](https://www.threads.net/@bagus_64byte)
+[![TikTok](https://img.shields.io/badge/-@baguserwanto-black?style=flat&logo=TikTok&logoColor=white)](https://www.tiktok.com/@erwantax)
 ![Visitor](https://komarev.com/ghpvc/?username=baguserwanto&label=Visitor&color=2bbc8a)
 
 Bagus is a passionate Software Engineer specializing in mobile app development and backend services. With expertise in JavaScript and TypeScript, he is dedicated to building efficient and scalable applications. When not coding, Bagus enjoys connecting with the tech community and exploring new technologies.
