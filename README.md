@@ -41,7 +41,7 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
   <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>
 </p>
 
- <!--START_SECTION:waka-->
+<!--START_SECTION:waka-->
 <!--END_SECTION:waka-->
 
 ## 🏆 GitHub Profile Trophy
