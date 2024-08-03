@@ -44,4 +44,10 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 ## 🏆 GitHub Profile Trophy
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
+## Time Spent on Projects by Dominant Language
+
+![Updating...](https://github.com/volumeee/volumeee/workflows/update-language-times/badge.svg)
+
+<!-- language_times.md will be inserted here -->
+
 <sub>Credit: Bagus Erwanto</sub>
