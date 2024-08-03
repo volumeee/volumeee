@@ -50,6 +50,8 @@ def update_readme(language_times):
     formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
     formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
 
+    sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
+
     now = datetime.now()
     start_date = "13 March 2023"  # Update this to the actual start date
     end_date = now.strftime("%d %B %Y")
@@ -61,7 +63,7 @@ def update_readme(language_times):
     end_marker = '<!-- language_times_end -->'
 
     new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
-    for language, time in language_times.items():
+    for language, time in sorted_languages:
         new_content += f'{language:<25} {formatted_time[language]} {formatted_percentages[language]:>8}\n'
     new_content += '```\n'
 
