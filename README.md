@@ -41,9 +41,6 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
   <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>
 </p>
 
-## 🏆 GitHub Profile Trophy
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
-
 <!-- language_times_start -->
 ```typescript
 From: 13 March 2023 - To: 03 August 2024
@@ -61,5 +58,9 @@ C++                       12 hrs 0 mins   4.72 %
 CSS                       11 hrs 0 mins   4.33 %
 ```
 <!-- language_times_end -->
+
+
+## 🏆 GitHub Profile Trophy
+<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
 <sub>Credit: Bagus Erwanto</sub>
