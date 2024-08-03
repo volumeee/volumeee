@@ -21,31 +21,12 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 - JavaScript, TypeScript, React Native, Kotlin, Java, HTML5, CSS, Styled Components
 
 **Backend:**
-- Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL
+- Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL, Mongodb, Firebase
 
 **DevOps:**
-- Docker, CI/CD, GitHub Actions, Vercel, Digital Ocean
+- Docker, CI/CD, GitHub Actions, Vercel, Streamlit
 
-<p align="left">
-  <!-- Frontend -->
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>
-  <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>
-
-  <!-- Backend -->
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/>
-  <img src="https://www.vectorlogo.zone/logos/supabase/supabase-icon.svg" alt="supabase" width="40" height="40"/>
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/>
-
-  <!-- DevOps -->
-  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/>
-  <img src="https://www.vectorlogo.zone/logos/github/github-icon.svg" alt="github" width="40" height="40"/>
-  <img src="https://www.vectorlogo.zone/logos/vercel/vercel-icon.svg" alt="vercel" width="40" height="40"/>
-  <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>
-</p>
+[![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,cpp,python,html,css,nodejs,express,mysql,mongodb,figma,supabase,postgresql,firebase,vercel,github,androidstudio,arduino,&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
 ```typescript
