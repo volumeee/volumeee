@@ -14,9 +14,13 @@ jobs:
       - name: Update README
         run: |
           current_time=$(date '+%Y-%m-%d %H:%M:%S')
-          echo "## Jam Saat Ini\n\n$current_time" > timestamp.txt
+          echo "## Jam Saat Ini\n\n$current_time" >> README.md
+          echo "## Most Frequently Used Programming Languages" >> README.md
+          echo "- JavaScript" >> README.md
+          echo "- TypeScript" >> README.md
+          echo "- Java" >> README.md
           git config --global user.name 'github-actions'
           git config --global user.email 'actions@github.com'
-          git add timestamp.txt
-          git commit -m 'Update timestamp'
+          git add README.md
+          git commit -m 'Update README with current timestamp and programming languages'
           git push
