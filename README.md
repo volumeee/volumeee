@@ -7,7 +7,13 @@
 [![TikTok](https://img.shields.io/badge/-erwantax-black?style=flat&logo=TikTok&logoColor=white)](https://www.tiktok.com/@erwantax)
 ![Visitor](https://komarev.com/ghpvc/?username=volumeee&label=Visitor&color=2bbc8a)
 
-Bagus is a passionate Software Engineer specializing in mobile app development and backend services. With expertise in JavaScript and TypeScript, he is dedicated to building efficient and scalable applications. When not coding, Bagus enjoys connecting with the tech community and exploring new technologies.
+Bagus is not just a Software Engineer; he's a master wizard in the realm of programming. With the flick of his virtual wand, he commands the elemental forces of JavaScript and TypeScript, conjuring efficient and scalable applications from the ether of the digital realm.
+
+In the enchanted world of coding, Bagus is a spellcaster of the highest order, seamlessly weaving together frontend and backend elements to create magical user experiences. His expertise in mobile app development and backend services allows him to transform complex challenges into elegant solutions with a touch of his mystical code.
+
+When not immersed in the arcane arts of software development, Bagus roams the tech community, forging connections and exploring the latest technological marvels. His quest for knowledge and innovation fuels his passion, making him a true sorcerer of the digital age.
+
+Bagus doesn't just code; he creates spells and enchantments, turning lines of code into masterpieces of technology. With every project, he adds a touch of magic, leaving a trail of wonder and excellence in his wake.
 
 ## 🛠 &nbsp;Technologies & Tools
 
