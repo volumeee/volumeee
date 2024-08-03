@@ -25,7 +25,7 @@ def calculate_time_spent():
 
     for repo in repos:
         repo_name = repo['name']
-        language = repo['language']
+        language = repo['language'] if repo['language'] else 'Unknown'
         commits = get_commits(repo_name)
         # Assuming each commit represents an hour of work (for simplicity)
         language_times[language] += len(commits)
