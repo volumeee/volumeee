@@ -47,15 +47,15 @@ From: 13 March 2023 - To: 03 August 2024
 
 Total Time: 254 hrs 0 mins
 
-TypeScript                58 hrs 0 mins  22.83 %
 JavaScript                96 hrs 0 mins  37.80 %
-Python                    2 hrs 0 mins   0.79 %
-Kotlin                    23 hrs 0 mins   9.06 %
-HTML                      6 hrs 0 mins   2.36 %
-Java                      15 hrs 0 mins   5.91 %
+TypeScript                58 hrs 0 mins  22.83 %
 Unknown                   31 hrs 0 mins  12.20 %
+Kotlin                    23 hrs 0 mins   9.06 %
+Java                      15 hrs 0 mins   5.91 %
 C++                       12 hrs 0 mins   4.72 %
 CSS                       11 hrs 0 mins   4.33 %
+HTML                      6 hrs 0 mins   2.36 %
+Python                    2 hrs 0 mins   0.79 %
 ```
 <!-- language_times_end -->
 
