@@ -45,17 +45,21 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
 <!-- language_times_start -->
-## Time Spent on Projects by Dominant Language
-- **TypeScript**: 58 hours
-- **JavaScript**: 96 hours
-- **Python**: 2 hours
-- **Kotlin**: 23 hours
-- **HTML**: 6 hours
-- **Java**: 15 hours
-- **None**: 31 hours
-- **C++**: 12 hours
-- **CSS**: 11 hours
+```typescript
+From: 13 March 2023 - To: 03 August 2024
 
+Total Time: 254 hrs 0 mins
+
+TypeScript                58 hrs 0 mins  22.83 %
+JavaScript                96 hrs 0 mins  37.80 %
+Python                    2 hrs 0 mins   0.79 %
+Kotlin                    23 hrs 0 mins   9.06 %
+HTML                      6 hrs 0 mins   2.36 %
+Java                      15 hrs 0 mins   5.91 %
+Unknown                   31 hrs 0 mins  12.20 %
+C++                       12 hrs 0 mins   4.72 %
+CSS                       11 hrs 0 mins   4.33 %
+```
 <!-- language_times_end -->
 
 <sub>Credit: Bagus Erwanto</sub>
