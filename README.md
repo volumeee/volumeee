@@ -48,6 +48,6 @@ Python                    2 hrs 0 mins   0.79 %
 
 
 ## 🏆 GitHub Profile Trophy
-<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
+<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee&rank=-?" alt="volumeee" /></a> </p>
 
 <sub>Credit: Bagus Erwanto 2024</sub>
