@@ -44,8 +44,6 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 ## 🏆 GitHub Profile Trophy
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
-## Time Spent on Projects by Dominant Language
-
 <!-- language_times_start -->
 ## Time Spent on Projects by Dominant Language
 - **TypeScript**: 58 hours
