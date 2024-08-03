@@ -3,7 +3,7 @@ name: Update README
 on:
   schedule:
     - cron: '0 8,16,23 * * *'  # Pada pukul 08:00, 16:00, dan 23:00 setiap hari
-    workflow_dispatch:
+  workflow_dispatch:  # Menambahkan event untuk menjalankan workflow secara manual
 
 jobs:
   update-readme:
@@ -16,8 +16,8 @@ jobs:
         run: |
           current_time=$(date '+%Y-%m-%d %H:%M:%S')
           echo "## Jam Saat Ini\n\n$current_time" > timestamp.txt
-          git config --global user.name 'volumeee'
-          git config --global user.email 'mr.volumee@gmail.com'
+          git config --global user.name 'github-actions'
+          git config --global user.email 'actions@github.com'
           git add timestamp.txt
           git commit -m 'Update timestamp'
           git push
@@ -74,8 +74,8 @@ jobs:
 
       - name: Commit and Push changes
         run: |
-          git config --global user.name 'volumeee'
-          git config --global user.email 'mr.volumee@gmail.com'
+          git config --global user.name 'Your Name'
+          git config --global user.email 'your-email@example.com'
           git add README.md
           git commit -m 'Update README.md content'
           git push
