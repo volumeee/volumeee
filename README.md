@@ -20,6 +20,11 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 **DevOps:**
 - Docker, CI/CD, GitHub Actions, Vercel, Digital Ocean
 
+**Most Frequently Used Programming Languages:**
+- JavaScript
+- TypeScript
+- Java
+
 <p align="left">
   <!-- Frontend -->
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
