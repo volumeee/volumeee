@@ -53,7 +53,7 @@ def update_readme(language_times):
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
     now = datetime.now()
-    start_date = "13 March 2023"  # Update this to the actual start date
+    start_date = "6 Juli 2023"  # Update this to the actual start date
     end_date = now.strftime("%d %B %Y")
 
     with open(README_FILE, 'r') as f:
