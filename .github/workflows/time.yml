@@ -3,6 +3,7 @@ name: Update README
 on:
   schedule:
     - cron: '0 8,16,23 * * *'  # Pada pukul 08:00, 16:00, dan 23:00 setiap hari
+    workflow_dispatch:
 
 jobs:
   update-readme:
