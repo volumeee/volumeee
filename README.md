@@ -20,11 +20,6 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 **DevOps:**
 - Docker, CI/CD, GitHub Actions, Vercel, Digital Ocean
 
-**Most Frequently Used Programming Languages:**
-- JavaScript
-- TypeScript
-- Java
-
 <p align="left">
   <!-- Frontend -->
   <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>
@@ -50,3 +45,5 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 <p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>
 
 <sub>Credit: Bagus Erwanto</sub>
+
+## Jam Saat Ini
