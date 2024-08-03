@@ -46,8 +46,7 @@ Bagus is a passionate Software Engineer specializing in mobile app development a
 
 ## Time Spent on Projects by Dominant Language
 
-![Updating...](https://github.com/volumeee/volumeee/workflows/update-language-times/badge.svg)
-
-<!-- language_times.md will be inserted here -->
+<!-- language_times_start -->
+<!-- language_times_end -->
 
 <sub>Credit: Bagus Erwanto</sub>
