@@ -2,7 +2,7 @@ name: Update Language Times
 
 on:
   schedule:
-    - cron: '0 0 * * *' # run daily at midnight
+    - cron: '0 */5 * * *' # run every 5 hours
   push:
     branches:
       - main
