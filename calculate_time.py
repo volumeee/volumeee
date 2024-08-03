@@ -1,6 +1,7 @@
 import requests
 from collections import defaultdict
 import os
+from datetime import datetime
 
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
@@ -31,21 +32,43 @@ def calculate_time_spent():
     
     return language_times
 
+def format_time(hours):
+    h = int(hours)
+    m = int((hours - h) * 60)
+    return f'{h} hrs {m} mins'
+
+def calculate_percentages(language_times, total_time):
+    percentages = {}
+    for language, time in language_times.items():
+        percentages[language] = (time / total_time) * 100
+    return percentages
+
 def update_readme(language_times):
+    total_time = sum(language_times.values())
+    percentages = calculate_percentages(language_times, total_time)
+
+    formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
+    formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
+
+    now = datetime.now()
+    start_date = "13 March 2023"  # Update this to the actual start date
+    end_date = now.strftime("%d %B %Y")
+
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
     
     start_marker = '<!-- language_times_start -->'
     end_marker = '<!-- language_times_end -->'
 
-    new_content = '## Time Spent on Projects by Dominant Language\n'
+    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
     for language, time in language_times.items():
-        new_content += f'- **{language}**: {time} hours\n'
+        new_content += f'{language:<25} {formatted_time[language]} {formatted_percentages[language]:>8}\n'
+    new_content += '```\n'
 
     if start_marker in readme_content and end_marker in readme_content:
-        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + '\n' + end_marker + readme_content.split(end_marker)[1]
+        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
     else:
-        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + '\n' + end_marker
+        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
 
     with open(README_FILE, 'w') as f:
         f.write(new_readme_content)
