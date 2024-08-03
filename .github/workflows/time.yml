@@ -14,13 +14,67 @@ jobs:
       - name: Update README
         run: |
           current_time=$(date '+%Y-%m-%d %H:%M:%S')
-          echo "## Jam Saat Ini\n\n$current_time" >> README.md
-          echo "## Most Frequently Used Programming Languages" >> README.md
-          echo "- JavaScript" >> README.md
-          echo "- TypeScript" >> README.md
-          echo "- Java" >> README.md
-          git config --global user.name 'github-actions'
-          git config --global user.email 'actions@github.com'
+          echo "## Jam Saat Ini\n\n$current_time" > timestamp.txt
+          git config --global user.name 'volumeee'
+          git config --global user.email 'mr.volumee@gmail.com'
+          git add timestamp.txt
+          git commit -m 'Update timestamp'
+          git push
+
+      - name: Update README Content
+        run: |
+          echo '## Hi 👋, I''m Bagus Erwanto!' >> README.md
+          echo '' >> README.md
+          echo '[![Linkedin](https://img.shields.io/badge/-baguserwanto-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/baguserwanto/)' >> README.md
+          echo '[![Gmail](https://img.shields.io/badge/-bagus251001@gmail.com-c14438?style=flat&logo=Gmail&logoColor=white)](mailto:bagus251001@gmail.com)' >> README.md
+          echo '[![Instagram](https://img.shields.io/badge/-bagus_64byte-e4405f?style=flat&logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/)' >> README.md
+          echo '[![Threads](https://img.shields.io/badge/-bagus_64byte-000000?style=flat&logo=threads&logoColor=white)](https://www.threads.net/@bagus_64byte)' >> README.md
+          echo '[![TikTok](https://img.shields.io/badge/-erwantax-black?style=flat&logo=TikTok&logoColor=white)](https://www.tiktok.com/@erwantax)' >> README.md
+          echo '![Visitor](https://komarev.com/ghpvc/?username=baguserwanto&label=Visitor&color=2bbc8a)' >> README.md
+          echo '' >> README.md
+          echo 'Bagus is a passionate Software Engineer specializing in mobile app development and backend services. With expertise in JavaScript and TypeScript, he is dedicated to building efficient and scalable applications. When not coding, Bagus enjoys connecting with the tech community and exploring new technologies.' >> README.md
+          echo '' >> README.md
+          echo '## 🛠 &nbsp;Technologies & Tools' >> README.md
+          echo '' >> README.md
+          echo '**Frontend:**' >> README.md
+          echo '- JavaScript, TypeScript, React Native, Kotlin, Java, HTML5, CSS, Styled Components' >> README.md
+          echo '' >> README.md
+          echo '**Backend:**' >> README.md
+          echo '- Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL' >> README.md
+          echo '' >> README.md
+          echo '**DevOps:**' >> README.md
+          echo '- Docker, CI/CD, GitHub Actions, Vercel, Digital Ocean' >> README.md
+          echo '' >> README.md
+          echo '<p align="left">' >> README.md
+          echo '  <!-- Frontend -->' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="typescript" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://reactnative.dev/img/header_logo.svg" alt="reactnative" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/>' >> README.md
+          echo '' >> README.md
+          echo '  <!-- Backend -->' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://www.vectorlogo.zone/logos/supabase/supabase-icon.svg" alt="supabase" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/>' >> README.md
+          echo '' >> README.md
+          echo '  <!-- DevOps -->' >> README.md
+          echo '  <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://www.vectorlogo.zone/logos/github/github-icon.svg" alt="github" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://www.vectorlogo.zone/logos/vercel/vercel-icon.svg" alt="vercel" width="40" height="40"/>' >> README.md
+          echo '  <img src="https://www.vectorlogo.zone/logos/digitalocean/digitalocean-icon.svg" alt="digitalocean" width="40" height="40"/>' >> README.md
+          echo '</p>' >> README.md
+          echo '' >> README.md
+          echo '## 🏆 GitHub Profile Trophy' >> README.md
+          echo '<p align="left"> <a href="https://github.com/ryo-ma/github-profile-trophy"><img src="https://github-profile-trophy.vercel.app/?username=volumeee" alt="volumeee" /></a> </p>' >> README.md
+          echo '' >> README.md
+          echo '<sub>Credit: Bagus Erwanto</sub>' >> README.md
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name 'volumeee'
+          git config --global user.email 'mr.volumee@gmail.com'
           git add README.md
-          git commit -m 'Update README with current timestamp and programming languages'
+          git commit -m 'Update README.md content'
           git push
