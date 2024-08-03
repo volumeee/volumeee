@@ -2,15 +2,10 @@ import requests
 from collections import defaultdict
 import os
 from datetime import datetime
-import matplotlib.pyplot as plt
 
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
-START_DATE = '13 March 2023'
-END_DATE = '02 August 2024'
-TOTAL_TIME_STR = '1,204 hrs 2 mins'
-TOTAL_TIME_HOURS = 1204 + 2/60  # Total time in hours
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -48,28 +43,49 @@ def calculate_percentages(language_times, total_time):
         percentages[language] = (time / total_time) * 100
     return percentages
 
-def create_bar_chart(language_times, total_time):
-    sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
-    languages = [lang for lang, _ in sorted_languages]
-    times = [time for _, time in sorted_languages]
-    percentages = [time / total_time * 100 for time in times]
+def create_text_graph(percent):
+    bar_length = 20
+    filled_length = int(bar_length * percent // 100)
+    bar = '█' * filled_length + '░' * (bar_length - filled_length)
+    return bar
 
-    plt.figure(figsize=(10, 6))
-    bars = plt.barh(languages, times, color='skyblue')
-    plt.xlabel('Time Spent (hours)')
-    plt.ylabel('Programming Languages')
-    plt.title(f'Time Spent on Programming Languages\nFrom: {START_DATE} - To: {END_DATE}\nTotal Time: {TOTAL_TIME_STR}')
+def update_readme(language_times):
+    total_time = sum(language_times.values())
+    percentages = calculate_percentages(language_times, total_time)
+
+    formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
+    formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
+
+    sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
+
+    now = datetime.now()
+    start_date = "13 March 2023"
+    end_date = now.strftime("%d %B %Y")
+
+    new_content = f'```\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
+    for language, time in sorted_languages:
+        percent = (time / total_time) * 100
+        graph = create_text_graph(percent)
+        new_content += f'{language:<25} {formatted_time[language]} {graph} {formatted_percentages[language]:>8}\n'
+    new_content += '```\n'
+
+    with open(README_FILE, 'r') as f:
+        readme_content = f.read()
     
-    # Add percentage labels
-    for bar, percent in zip(bars, percentages):
-        plt.text(bar.get_width(), bar.get_y() + bar.get_height() / 2, f'{percent:.2f}%', ha='left', va='center')
-    
-    plt.gca().invert_yaxis()  # Invert y-axis to have the highest value on top
-    plt.show()
+    start_marker = '<!-- language_times_start -->'
+    end_marker = '<!-- language_times_end -->'
+
+    if start_marker in readme_content and end_marker in readme_content:
+        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
+    else:
+        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
+
+    with open(README_FILE, 'w') as f:
+        f.write(new_readme_content)
 
 def main():
     language_times = calculate_time_spent()
-    create_bar_chart(language_times, TOTAL_TIME_HOURS)
+    update_readme(language_times)
 
 if __name__ == '__main__':
     main()
