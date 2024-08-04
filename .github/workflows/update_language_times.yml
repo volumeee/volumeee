@@ -28,10 +28,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: python calculate_time.py
 
+    - name: Check for changes
+      run: git diff --exit-code || git add README.md
+
     - name: Commit changes
+      if: success()
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add README.md
         git commit -m "Update language times"
         git push
+
