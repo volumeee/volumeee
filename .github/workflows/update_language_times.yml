@@ -29,13 +29,17 @@ jobs:
       run: python calculate_time.py
 
     - name: Check for changes
-      run: git diff --exit-code || git add README.md
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add README.md
+        if git diff-index --quiet HEAD; then
+          echo "No changes detected, nothing to commit."
+          exit 0
+        fi
 
     - name: Commit changes
       if: success()
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
         git commit -m "Update language times"
         git push
-
