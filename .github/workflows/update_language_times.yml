@@ -28,18 +28,18 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: python calculate_time.py
 
-    - name: Check for changes
+    - name: Configure Git
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+
+    - name: Check for changes and commit if any
+      run: |
         git add README.md
         if git diff-index --quiet HEAD; then
           echo "No changes detected, nothing to commit."
           exit 0
+        else
+          git commit -m "Update language times"
+          git push
         fi
-
-    - name: Commit changes
-      if: success()
-      run: |
-        git commit -m "Update language times"
-        git push
