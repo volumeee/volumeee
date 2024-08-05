@@ -62,7 +62,7 @@ def update_readme(language_times):
     start_date = "13 March 2023"
     end_date = now.strftime("%d %B %Y")
 
-    new_content = f'```\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
+    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
     for language, time in sorted_languages:
         percent = (time / total_time) * 100
         graph = create_text_graph(percent)
