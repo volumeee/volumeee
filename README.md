@@ -5,6 +5,7 @@
 [![Instagram](https://img.shields.io/badge/-bagus_64byte-e4405f?style=flat&logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/)
 [![Threads](https://img.shields.io/badge/-bagus_64byte-000000?style=flat&logo=threads&logoColor=white)](https://www.threads.net/@bagus_64byte)
 [![TikTok](https://img.shields.io/badge/-erwantax-black?style=flat&logo=TikTok&logoColor=white)](https://www.tiktok.com/@erwantax)
+[![Medium](https://img.shields.io/badge/-@bagus251001-black?style=flat&logo=Medium&logoColor=white)](https://medium.com/@bagus251001)
 ![Visitor](https://komarev.com/ghpvc/?username=volumeee&label=Visitor&color=2bbc8a)
 
 Bagus is not just a Software Engineer; he's a master wizard in the realm of programming. With the flick of his virtual wand, he commands the elemental forces of JavaScript and TypeScript, conjuring efficient and scalable applications from the ether of the digital realm.
