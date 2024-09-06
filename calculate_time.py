@@ -54,7 +54,7 @@ def update_readme(language_times):
     percentages = calculate_percentages(language_times, total_time)
 
     formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
-    formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
+    formatted_percentages = {lang: f'{percent:.2f}%' for lang, percent in percentages.items()}
 
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
@@ -66,7 +66,7 @@ def update_readme(language_times):
     for language, time in sorted_languages:
         percent = (time / total_time) * 100
         graph = create_text_graph(percent)
-        new_content += f'{language:<25} {formatted_time[language]} {graph} {formatted_percentages[language]:>8}\n'
+        new_content += f'{language:<18} {formatted_time[language]:>14}  {graph} {formatted_percentages[language]:>7}\n'
     new_content += '```\n'
 
     with open(README_FILE, 'r') as f:
