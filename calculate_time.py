@@ -1,11 +1,12 @@
 import requests
 from collections import defaultdict
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
+START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -15,7 +16,8 @@ def get_repos(username):
 
 def get_commits(repo_name):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
-    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'})
+    params = {'since': START_DATE.isoformat()}
+    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
     commits = response.json()
     return commits
 
@@ -27,7 +29,6 @@ def calculate_time_spent():
         repo_name = repo['name']
         language = repo['language'] if repo['language'] else 'Unknown'
         commits = get_commits(repo_name)
-        # Assuming each commit represents an hour of work (for simplicity)
         language_times[language] += len(commits)
     
     return language_times
@@ -58,8 +59,8 @@ def update_readme(language_times):
 
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
-    now = datetime.now()
-    start_date = "13 March 2023"
+    now = datetime.now(timezone.utc)
+    start_date = START_DATE.strftime("%d %B %Y")
     end_date = now.strftime("%d %B %Y")
 
     new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
