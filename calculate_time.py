@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
-START_DATE = datetime(2023, 1, 1, tzinfo=timezone.utc)
+START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
