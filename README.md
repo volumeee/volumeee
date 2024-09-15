@@ -19,15 +19,12 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 ## 🛠 &nbsp;Technologies & Tools
 
 **Frontend:**
-- JavaScript, TypeScript, React Native, Kotlin, Java, HTML5, CSS, Styled Components
+- JavaScript, TypeScript, React Native, Flutter, TailwindCss, CSS, Styled Components
 
 **Backend:**
-- Node.js, Express, Supabase, PostgreSQL, REST API, GraphQL, Mongodb, Firebase
+- Node.js, ExpressJs, Supabase, PostgreSQL, Laravel, Mongodb, Firebase
 
-**DevOps:**
-- Docker, CI/CD, GitHub Actions, Vercel, Streamlit
-
-[![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,cpp,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,laravel,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
 ```typescript
