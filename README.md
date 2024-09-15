@@ -19,7 +19,7 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 ## 🛠 &nbsp;Technologies & Tools
 
 **Frontend:**
-- JavaScript, TypeScript, React Native, Flutter, TailwindCss, CSS, Styled Components
+- JavaScript, TypeScript, React Native, ReactJs, NextJs, Flutter, TailwindCss, CSS, Styled Components
 
 **Backend:**
 - Node.js, ExpressJs, Supabase, PostgreSQL, Laravel, Mongodb, Firebase
