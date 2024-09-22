@@ -3,6 +3,10 @@ from collections import defaultdict
 import os
 from datetime import datetime, timezone
 import re
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
@@ -10,37 +14,57 @@ README_FILE = 'README.md'
 START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)
 
 def get_repos(username):
-    url = f'https://api.github.com/users/{username}/repos'
-    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'})
-    repos = response.json()
+    url = f'https://api.github.com/user/repos'
+    params = {'type': 'all', 'per_page': 100}
+    repos = []
+    while url:
+        try:
+            response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
+            response.raise_for_status()
+            repos.extend(response.json())
+            url = response.links.get('next', {}).get('url')
+        except requests.RequestException as e:
+            logger.error(f"Error fetching repos: {e}")
+            return []
     return repos
 
 def get_commits(repo_name, since):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
     params = {'since': since.isoformat()}
-    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
-    commits = response.json()
-    return commits
+    try:
+        response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        logger.error(f"Error fetching commits for {repo_name}: {e}")
+        return []
 
 def get_last_update_time():
-    with open(README_FILE, 'r') as f:
-        content = f.read()
-    match = re.search(r'From: .* - To: (.*)', content)
-    if match:
-        last_update = datetime.strptime(match.group(1), "%d %B %Y").replace(tzinfo=timezone.utc)
-        return last_update
+    try:
+        with open(README_FILE, 'r') as f:
+            content = f.read()
+        match = re.search(r'From: .* - To: (.*)', content)
+        if match:
+            last_update = datetime.strptime(match.group(1), "%d %B %Y").replace(tzinfo=timezone.utc)
+            return last_update
+    except Exception as e:
+        logger.error(f"Error getting last update time: {e}")
     return START_DATE
 
 def get_stored_times():
-    with open(README_FILE, 'r') as f:
-        content = f.read()
-    stored_times = {}
-    for line in content.split('\n'):
-        match = re.match(r'(\w+)\s+(\d+) hrs (\d+) mins', line)
-        if match:
-            language, hours, minutes = match.groups()
-            stored_times[language] = int(hours) * 60 + int(minutes)
-    return stored_times
+    try:
+        with open(README_FILE, 'r') as f:
+            content = f.read()
+        stored_times = {}
+        for line in content.split('\n'):
+            match = re.match(r'(\w+)\s+(\d+) hrs (\d+) mins', line)
+            if match:
+                language, hours, minutes = match.groups()
+                stored_times[language] = int(hours) * 60 + int(minutes)
+        return stored_times
+    except Exception as e:
+        logger.error(f"Error getting stored times: {e}")
+        return {}
 
 def calculate_time_spent(since):
     repos = get_repos(GITHUB_USERNAME)
@@ -49,9 +73,12 @@ def calculate_time_spent(since):
         repo_name = repo['name']
         language = repo['language'] if repo['language'] else 'Unknown'
         commits = get_commits(repo_name, since)
-        language_times[language] += len(commits)
+        for commit in commits:
+            commit_date = datetime.strptime(commit['commit']['author']['date'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+            if commit_date > since:
+                language_times[language] += 30  # Assuming 30 minutes per commit
     
-    return {lang: count * 30 for lang, count in language_times.items()}
+    return language_times
 
 def format_time(minutes):
     h = minutes // 60
@@ -91,18 +118,22 @@ def update_readme(new_times):
     
     new_content += '```\n'
     
-    with open(README_FILE, 'r') as f:
-        readme_content = f.read()
-    
-    start_marker = '<!-- language_times_start -->'
-    end_marker = '<!-- language_times_end -->'
-    if start_marker in readme_content and end_marker in readme_content:
-        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
-    else:
-        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
-    
-    with open(README_FILE, 'w') as f:
-        f.write(new_readme_content)
+    try:
+        with open(README_FILE, 'r') as f:
+            readme_content = f.read()
+        
+        start_marker = '<!-- language_times_start -->'
+        end_marker = '<!-- language_times_end -->'
+        if start_marker in readme_content and end_marker in readme_content:
+            new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
+        else:
+            new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
+        
+        with open(README_FILE, 'w') as f:
+            f.write(new_readme_content)
+        logger.info("README updated successfully")
+    except Exception as e:
+        logger.error(f"Error updating README: {e}")
 
 def main():
     last_update = get_last_update_time()
