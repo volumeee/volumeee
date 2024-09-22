@@ -40,7 +40,6 @@ HTML                 6 hrs 0 mins  ░░░░░░░░░░░░░░░
 PHP                 2 hrs 30 mins  ░░░░░░░░░░░░░░░░░░░░    1.32%
 Python               2 hrs 0 mins  ░░░░░░░░░░░░░░░░░░░░    1.06%
 Unknown              1 hrs 0 mins  ░░░░░░░░░░░░░░░░░░░░    0.53%
-C++                  0 hrs 0 mins  ░░░░░░░░░░░░░░░░░░░░    0.00%
 ```
 <!-- language_times_end -->
 
