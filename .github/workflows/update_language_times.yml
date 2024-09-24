@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
+      checks: write
       
     steps:
     - name: Checkout repository
@@ -34,6 +36,11 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: python calculate_time.py
+
+    - name: Debug
+      run: |
+        echo "GH_TOKEN is set: ${{ secrets.GH_TOKEN != '' }}"
+        echo "GITHUB_TOKEN is set: ${{ secrets.GITHUB_TOKEN != '' }}"
     
     - name: Configure Git
       run: |
