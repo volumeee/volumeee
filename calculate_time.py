@@ -6,30 +6,35 @@ from github import Github
 START_DATE = datetime(2023, 1, 1, tzinfo=timezone.utc)  # Adjust this to your actual start date
 
 def get_stored_times():
-    # Initialize with existing data from README.md
     stored_times = {}
     with open('README.md', 'r') as file:
         content = file.read()
-        # Extract the language times from the existing section
         if '<!-- language_times_start -->' in content:
             start_index = content.index('<!-- language_times_start -->') + len('<!-- language_times_start -->')
             end_index = content.index('<!-- language_times_end -->')
             times_section = content[start_index:end_index].strip()
             for line in times_section.splitlines():
                 parts = line.split()
-                if len(parts) >= 3:
+                if len(parts) >= 2:  # Changed to allow at least language and time
                     lang = parts[0]
-                    time_str = parts[1]  # e.g., "95"
-                    hours, minutes = map(int, time_str.split('hrs'))
-                    total_minutes = hours * 60 + minutes
-                    stored_times[lang] = stored_times.get(lang, 0) + total_minutes
+                    time_str = parts[1]
+                    try:
+                        hours, minutes = map(int, time_str.split('hrs'))
+                        total_minutes = hours * 60 + minutes
+                        stored_times[lang] = stored_times.get(lang, 0) + total_minutes
+                    except ValueError:
+                        print(f"Skipping line due to format error: {line}")
     return stored_times
 
 def fetch_language_times(token):
     g = Github(token)
     repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
-    languages = repo.get_languages()
-    return {lang: minutes for lang, minutes in languages.items()}  # Convert to minutes as needed
+    total_times = {}
+    for commit in repo.get_commits():
+        languages = commit.get_stats().get('additions', {})
+        for lang, count in languages.items():
+            total_times[lang] = total_times.get(lang, 0) + count  # Aggregate usage
+    return total_times
 
 def format_time(minutes):
     hours = minutes // 60
@@ -68,10 +73,8 @@ def update_readme(new_times):
     
     new_content += '```\n'
     
-    # Update README.md
     with open('README.md', 'r+') as file:
         content = file.read()
-        # Replace the old language times section with new content
         new_file_content = content.replace(content[content.index('<!-- language_times_start -->'):content.index('<!-- language_times_end -->')], new_content)
         file.seek(0)
         file.write(new_file_content)
