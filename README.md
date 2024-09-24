@@ -28,18 +28,18 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 
 <!-- language_times_start -->
 ```typescript
-From: 13 March 2022 - To: 24 September 2024
+From:                  13 March 2022 - To:              24 September 2024
 
-Total Time: 189 hrs 0 mins  (926 days)
+Total Time:       189 hrs 0 mins  (926 days)
 
-JavaScript                95 hrs 0 mins ██████████░░░░░░░░░░            50.26 %
-TypeScript                56 hrs 0 mins █████░░░░░░░░░░░░░░░            29.63 %
-Java                      14 hrs 0 mins █░░░░░░░░░░░░░░░░░░░             7.41 %
-Kotlin                    11 hrs 0 mins █░░░░░░░░░░░░░░░░░░░             5.82 %
-HTML                      6 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░             3.17 %
-C++                       3 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░             1.59 %
-Python                    2 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░             1.06 %
-PHP                       1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░             0.53 %
-Unknown                   1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░             0.53 %
+               JavaScript 95 hrs 0 mins ██████████░░░░░░░░░░  50.26 %
+               TypeScript 56 hrs 0 mins █████░░░░░░░░░░░░░░░  29.63 %
+                     Java 14 hrs 0 mins █░░░░░░░░░░░░░░░░░░░   7.41 %
+                   Kotlin 11 hrs 0 mins █░░░░░░░░░░░░░░░░░░░   5.82 %
+                     HTML 6 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   3.17 %
+                      C++ 3 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   1.59 %
+                   Python 2 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   1.06 %
+                      PHP 1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   0.53 %
+                  Unknown 1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   0.53 %
 ```
 <!-- language_times_end -->
