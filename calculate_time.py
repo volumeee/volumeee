@@ -59,11 +59,11 @@ def update_readme(language_times):
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
     now = datetime.now()
-    start_date = "13 March 2022"
-    end_date = now.strftime("%d %B %Y")
+    start_date = datetime.strptime("13 March 2022", "%d %B %Y")
+    end_date = now 
     duration = (end_date - start_date).days
 
-    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}  ({duration} days)\n\n'
+    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\nTotal Time: {format_time(total_time)}  ({duration} days)\n\n'
     for language, time in sorted_languages:
         percent = (time / total_time) * 100 if total_time > 0 else 0
         graph = create_text_graph(percent)
