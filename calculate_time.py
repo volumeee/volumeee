@@ -29,7 +29,11 @@ def calculate_time_spent():
         commits = get_commits(repo_name)
         # Assuming each commit represents an hour of work (for simplicity)
         language_times[language] += len(commits)
-    
+
+    # Convert commits to hours; adjust as necessary if each commit represents less than an hour.
+    for lang in language_times:
+        language_times[lang] = language_times[lang]  # You might need to adjust how hours are counted
+
     return language_times
 
 def format_time(hours):
@@ -58,11 +62,12 @@ def update_readme(language_times):
 
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
-    now = datetime.now()
-    start_date = "13 March 2022"
-    end_date = now.strftime("%d %B %Y")
+    start_date = datetime.strptime("13 March 2022", "%d %B %Y")
+    end_date = datetime.now()
+    duration = (end_date - start_date).days
+    total_time = sum(language_times.values())
 
-    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
+    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\nTotal Time: {format_time(total_time)} ({duration} days)\n\n'
     for language, time in sorted_languages:
         percent = (time / total_time) * 100
         graph = create_text_graph(percent)
@@ -71,7 +76,7 @@ def update_readme(language_times):
 
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
-    
+
     start_marker = '<!-- language_times_start -->'
     end_marker = '<!-- language_times_end -->'
 
