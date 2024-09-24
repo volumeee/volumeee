@@ -27,13 +27,9 @@ def calculate_time_spent():
         repo_name = repo['name']
         language = repo['language'] if repo['language'] else 'Unknown'
         commits = get_commits(repo_name)
-        # Assuming each commit represents an hour of work (for simplicity)
+        # Count the number of commits as hours
         language_times[language] += len(commits)
-
-    # Convert commits to hours; adjust as necessary if each commit represents less than an hour.
-    for lang in language_times:
-        language_times[lang] = language_times[lang]  # You might need to adjust how hours are counted
-
+    
     return language_times
 
 def format_time(hours):
@@ -44,7 +40,7 @@ def format_time(hours):
 def calculate_percentages(language_times, total_time):
     percentages = {}
     for language, time in language_times.items():
-        percentages[language] = (time / total_time) * 100
+        percentages[language] = (time / total_time) * 100 if total_time > 0 else 0
     return percentages
 
 def create_text_graph(percent):
@@ -62,21 +58,21 @@ def update_readme(language_times):
 
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
-    start_date = datetime.strptime("13 March 2022", "%d %B %Y")
-    end_date = datetime.now()
+    now = datetime.now()
+    start_date = "13 March 2022"
+    end_date = now.strftime("%d %B %Y")
     duration = (end_date - start_date).days
-    total_time = sum(language_times.values())
 
-    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\nTotal Time: {format_time(total_time)} ({duration} days)\n\n'
+    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}  ({duration} days)\n\n'
     for language, time in sorted_languages:
-        percent = (time / total_time) * 100
+        percent = (time / total_time) * 100 if total_time > 0 else 0
         graph = create_text_graph(percent)
         new_content += f'{language:<25} {formatted_time[language]} {graph} {formatted_percentages[language]:>8}\n'
     new_content += '```\n'
 
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
-
+    
     start_marker = '<!-- language_times_start -->'
     end_marker = '<!-- language_times_end -->'
 
@@ -94,3 +90,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
