@@ -59,7 +59,7 @@ def update_readme(language_times):
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
 
     now = datetime.now()
-    start_date = "13 March 2023"
+    start_date = "13 March 2022"
     end_date = now.strftime("%d %B %Y")
 
     new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
