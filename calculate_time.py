@@ -148,15 +148,14 @@ def update_readme(new_times):
     start_date = START_DATE.strftime("%d %B %Y")
     end_date = now.strftime("%d %B %Y")
     
-    new_content = f'typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
+    new_content = f'typescript\nFrom: {start_date} - To: {end_date}\n\n'
+    new_content += f'Total Time: {format_time(total_time)}\n'
     
     for language, minutes in sorted_languages:
         time_str = format_time(minutes)
         percent = percentages[language]
         graph = create_text_graph(percent)
         new_content += f'{language:<18} {time_str:>14}  {graph} {percent:>7.2f}%\n'
-    
-    new_content += '\n'
     
     try:
         with open(README_FILE, 'r') as f:
@@ -174,6 +173,7 @@ def update_readme(new_times):
         logger.info("README updated successfully")
     except Exception as e:
         logger.error(f"Error updating README: {e}")
+
 
 def main():
     last_update = get_last_update_time()
