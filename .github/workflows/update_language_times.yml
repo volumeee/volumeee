@@ -1,45 +1,32 @@
-name: Update Language Times
+name: Update Language Statistics
 
 on:
-  schedule:
-    - cron: '0 */5 * * *' # run every 5 hours
   push:
-    branches:
-      - main
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'  # Run daily at midnight UTC
   workflow_dispatch: # allows manual trigger
 
 jobs:
-  update-language-times:
+  update-stats:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
+    - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
-
+        python-version: '3.x'
     - name: Install dependencies
-      run: pip install requests
-
-    - name: Run script
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests pytz
+    - name: Run update script
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python calculate_time.py
-
-    - name: Configure Git
+      run: python update_language_stats.py
+    - name: Commit and push if changed
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - name: Check for changes and commit if any
-      run: |
+        git config --global user.email "github-actions@example.com"
+        git config --global user.name "GitHub Actions"
         git add README.md
-        if git diff-index --quiet HEAD; then
-          echo "No changes detected, nothing to commit."
-          exit 0
-        else
-          git commit -m "Update language times"
-          git push
-        fi
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update language statistics" && git push)
