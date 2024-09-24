@@ -5,7 +5,7 @@ import pytz
 
 # Constants
 START_DATE = datetime(2023, 1, 1, tzinfo=pytz.UTC)  # Adjust to your desired start date
-GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
+GITHUB_TOKEN = os.environ.get("GH_TOKEN")  # Changed from GITHUB_TOKEN to GH_TOKEN
 REPO_NAME = os.environ["GITHUB_REPOSITORY"]
 
 def get_language_stats(repo, start_date):
@@ -16,9 +16,10 @@ def get_language_stats(repo, start_date):
         if commit.commit.author.date >= start_date:
             files = commit.files
             for file in files:
-                if file.filename.split('.')[-1] in ['py', 'js', 'java', 'cpp', 'html', 'css']:  # Add more extensions as needed
-                    lang = file.filename.split('.')[-1]
-                    languages[lang] = languages.get(lang, 0) + file.changes
+                # Get the file extension
+                ext = file.filename.split('.')[-1].lower()
+                if ext:  # Only consider files with extensions
+                    languages[ext] = languages.get(ext, 0) + file.changes
     
     return languages
 
@@ -55,6 +56,9 @@ def update_readme(language_stats):
     return new_content
 
 def main():
+    if not GITHUB_TOKEN:
+        raise ValueError("GH_TOKEN environment variable is not set")
+    
     g = Github(GITHUB_TOKEN)
     repo = g.get_repo(REPO_NAME)
     
