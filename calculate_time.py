@@ -1,100 +1,61 @@
 import os
 from datetime import datetime, timezone
 from github import Github
-import pytz
 
 # Constants
-START_DATE = datetime(2023, 1, 1, tzinfo=pytz.UTC)
-GITHUB_TOKEN = os.environ.get("GH_TOKEN")
-REPO_NAME = os.environ.get("REPO_NAME")  # Get repository name from environment variable
+START_DATE = datetime(2023, 1, 1, tzinfo=timezone.utc)  # Adjust this to your actual start date
 
-def get_language_stats(repo, start_date):
-    languages = {}
-    commits = repo.get_commits(since=start_date)
-    
-    for commit in commits:
-        if commit.commit.author.date >= start_date:
-            files = commit.files
-            for file in files:
-                ext = file.filename.split('.')[-1].lower()
-                if ext:
-                    languages[ext] = languages.get(ext, 0) + file.changes
-    
-    return languages
+def get_stored_times():
+    # Initialize with existing data from README.md or empty
+    return {}
 
 def format_time(minutes):
-    hours, mins = divmod(minutes, 60)
-    return f"{hours:02d}h {mins:02d}m"
+    hours = minutes // 60
+    minutes = minutes % 60
+    return f"{hours}h {minutes}m"
 
-def create_text_graph(percent, width=20):
-    filled = int(width * percent / 100)
-    return '█' * filled + '░' * (width - filled)
+def calculate_percentages(stored_times, total_time):
+    return {lang: (time / total_time * 100 if total_time > 0 else 0) for lang, time in stored_times.items()}
 
-def calculate_percentages(times, total):
-    return {lang: (changes / total) * 100 for lang, changes in times.items()}
+def create_text_graph(percent):
+    bar_length = 20
+    filled_length = int(bar_length * percent // 100)
+    return '█' * filled_length + '-' * (bar_length - filled_length)
 
-def update_readme(language_stats):
-    total_changes = sum(language_stats.values())
-    percentages = calculate_percentages(language_stats, total_changes)
+def update_readme(new_times):
+    stored_times = get_stored_times()
+    for lang, minutes in new_times.items():
+        stored_times[lang] = stored_times.get(lang, 0) + minutes
     
-    sorted_languages = sorted(language_stats.items(), key=lambda x: x[1], reverse=True)
+    total_time = sum(stored_times.values())
+    percentages = calculate_percentages(stored_times, total_time)
+    
+    sorted_languages = sorted(stored_times.items(), key=lambda x: x[1], reverse=True)
     
     now = datetime.now(timezone.utc)
     start_date = START_DATE.strftime("%d %B %Y")
     end_date = now.strftime("%d %B %Y")
     
-    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Changes: {total_changes}\n\n'
+    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
     
-    for language, changes in sorted_languages:
-        time_str = format_time(changes)
+    for language, minutes in sorted_languages:
+        time_str = format_time(minutes)
         percent = percentages[language]
         graph = create_text_graph(percent)
         new_content += f'{language:<18} {time_str:>14}  {graph} {percent:>7.2f}%\n'
     
     new_content += '```\n'
-    return new_content
-
-def main():
-    if not GITHUB_TOKEN:
-        raise ValueError("GH_TOKEN environment variable is not set")
     
-    if not REPO_NAME:
-        raise ValueError("REPO_NAME environment variable is not set")
-    
-    g = Github(GITHUB_TOKEN)
-    repo = g.get_repo(REPO_NAME)
-    
-    language_stats = get_language_stats(repo, START_DATE)
-    
-    new_readme_content = update_readme(language_stats)
-    
-    try:
-        readme = repo.get_contents("README.md")
-        current_content = readme.decoded_content.decode()
-        start_marker = "<!-- START_SECTION:language_stats -->"
-        end_marker = "<!-- END_SECTION:language_stats -->"
-        
-        start_index = current_content.find(start_marker)
-        end_index = current_content.find(end_marker)
-        
-        if start_index != -1 and end_index != -1:
-            updated_content = (
-                current_content[:start_index + len(start_marker)] +
-                "\n" + new_readme_content + "\n" +
-                current_content[end_index:]
-            )
-            
-            repo.update_file(
-                path="README.md",
-                message="Update language stats",
-                content=updated_content,
-                sha=readme.sha
-            )
-            print("README.md updated successfully.")
-        else:
-            print("Markers not found in README.md. Please add the markers to your README.")
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
+    # Update README.md
+    with open('README.md', 'r+') as file:
+        content = file.read()
+        # Update logic to replace the old block with new_content here
+        # This example assumes you're replacing a specific section
+        new_file_content = content.replace('```typescript\n...', new_content)  # Update this to match your README structure
+        file.seek(0)
+        file.write(new_file_content)
+        file.truncate()
 
 if __name__ == "__main__":
-    main()
+    new_times = {}  # Populate this dictionary with your language times
+    update_readme(new_times)
