@@ -1,43 +1,61 @@
-import requests
-from collections import defaultdict
 import os
 from datetime import datetime, timezone
 import re
 import logging
+from github import Github
+from collections import defaultdict
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)
 
-def get_repos(username):
-    url = f'https://api.github.com/user/repos'
-    params = {'type': 'all', 'per_page': 100}
-    repos = []
-    while url:
-        try:
-            response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
-            response.raise_for_status()
-            repos.extend(response.json())
-            url = response.links.get('next', {}).get('url')
-        except requests.RequestException as e:
-            logger.error(f"Error fetching repos: {e}")
-            return []
-    return repos
+def get_repos():
+    g = Github(GITHUB_TOKEN)
+    user = g.get_user()
+    return user.get_repos()
 
-def get_commits(repo_name, since):
-    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
-    params = {'since': since.isoformat()}
-    try:
-        response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'}, params=params)
-        response.raise_for_status()
-        return response.json()
-    except requests.RequestException as e:
-        logger.error(f"Error fetching commits for {repo_name}: {e}")
-        return []
+def calculate_language_times(repos, since):
+    language_times = defaultdict(int)
+    for repo in repos:
+        commits = repo.get_commits(since=since)
+        for commit in commits:
+            commit_date = commit.commit.author.date.replace(tzinfo=timezone.utc)
+            if commit_date > since:
+                files_changed = commit.files
+                for file in files_changed:
+                    language = get_file_language(file.filename)
+                    if language:
+                        language_times[language] += 30  # 30 minutes per file changed
+    return language_times
+
+def get_file_language(filename):
+    extension = os.path.splitext(filename)[1].lower()
+    language_map = {
+        '.py': 'Python',
+        '.js': 'JavaScript',
+        '.html': 'HTML',
+        '.css': 'CSS',
+        '.java': 'Java',
+        '.cpp': 'C++',
+        '.c': 'C',
+        '.go': 'Go',
+        '.rs': 'Rust',
+        '.ts': 'TypeScript',
+        '.rb': 'Ruby',
+        '.php': 'PHP',
+        '.swift': 'Swift',
+        '.kt': 'Kotlin',
+        '.scala': 'Scala',
+        '.m': 'Objective-C',
+        '.sh': 'Shell',
+        '.pl': 'Perl',
+        '.r': 'R',
+        '.lua': 'Lua'
+    }
+    return language_map.get(extension, 'Other')
 
 def get_last_update_time():
     try:
@@ -50,35 +68,6 @@ def get_last_update_time():
     except Exception as e:
         logger.error(f"Error getting last update time: {e}")
     return START_DATE
-
-def get_stored_times():
-    try:
-        with open(README_FILE, 'r') as f:
-            content = f.read()
-        stored_times = {}
-        for line in content.split('\n'):
-            match = re.match(r'(\w+)\s+(\d+) hrs (\d+) mins', line)
-            if match:
-                language, hours, minutes = match.groups()
-                stored_times[language] = int(hours) * 60 + int(minutes)
-        return stored_times
-    except Exception as e:
-        logger.error(f"Error getting stored times: {e}")
-        return {}
-
-def calculate_time_spent(since):
-    repos = get_repos(GITHUB_USERNAME)
-    language_times = defaultdict(int)
-    for repo in repos:
-        repo_name = repo['name']
-        language = repo['language'] if repo['language'] else 'Unknown'
-        commits = get_commits(repo_name, since)
-        for commit in commits:
-            commit_date = datetime.strptime(commit['commit']['author']['date'], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-            if commit_date > since:
-                language_times[language] += 30  # Assuming 30 minutes per commit
-    
-    return language_times
 
 def format_time(minutes):
     h = minutes // 60
@@ -94,15 +83,11 @@ def create_text_graph(percent):
     bar = '█' * filled_length + '░' * (bar_length - filled_length)
     return bar
 
-def update_readme(new_times):
-    stored_times = get_stored_times()
-    for lang, minutes in new_times.items():
-        stored_times[lang] = stored_times.get(lang, 0) + minutes
+def update_readme(language_times):
+    total_time = sum(language_times.values())
+    percentages = calculate_percentages(language_times, total_time)
     
-    total_time = sum(stored_times.values())
-    percentages = calculate_percentages(stored_times, total_time)
-    
-    sorted_languages = sorted(stored_times.items(), key=lambda x: x[1], reverse=True)
+    sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
     now = datetime.now(timezone.utc)
     start_date = START_DATE.strftime("%d %B %Y")
@@ -137,8 +122,9 @@ def update_readme(new_times):
 
 def main():
     last_update = get_last_update_time()
-    new_times = calculate_time_spent(last_update)
-    update_readme(new_times)
+    repos = get_repos()
+    language_times = calculate_language_times(repos, last_update)
+    update_readme(language_times)
 
 if __name__ == '__main__':
     main()
