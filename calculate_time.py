@@ -4,9 +4,9 @@ from github import Github
 import pytz
 
 # Constants
-START_DATE = datetime(2023, 1, 1, tzinfo=pytz.UTC)  # Adjust to your desired start date
-GITHUB_TOKEN = os.environ.get("GH_TOKEN")  # Changed from GITHUB_TOKEN to GH_TOKEN
-REPO_NAME = os.environ["GITHUB_REPOSITORY"]
+START_DATE = datetime(2023, 1, 1, tzinfo=pytz.UTC)
+GITHUB_TOKEN = os.environ.get("GH_TOKEN")
+REPO_NAME = os.environ.get("REPO_NAME")  # Get repository name from environment variable
 
 def get_language_stats(repo, start_date):
     languages = {}
@@ -16,9 +16,8 @@ def get_language_stats(repo, start_date):
         if commit.commit.author.date >= start_date:
             files = commit.files
             for file in files:
-                # Get the file extension
                 ext = file.filename.split('.')[-1].lower()
-                if ext:  # Only consider files with extensions
+                if ext:
                     languages[ext] = languages.get(ext, 0) + file.changes
     
     return languages
@@ -47,7 +46,7 @@ def update_readme(language_stats):
     new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Changes: {total_changes}\n\n'
     
     for language, changes in sorted_languages:
-        time_str = format_time(changes)  # Assuming 1 change = 1 minute for simplicity
+        time_str = format_time(changes)
         percent = percentages[language]
         graph = create_text_graph(percent)
         new_content += f'{language:<18} {time_str:>14}  {graph} {percent:>7.2f}%\n'
@@ -59,6 +58,9 @@ def main():
     if not GITHUB_TOKEN:
         raise ValueError("GH_TOKEN environment variable is not set")
     
+    if not REPO_NAME:
+        raise ValueError("REPO_NAME environment variable is not set")
+    
     g = Github(GITHUB_TOKEN)
     repo = g.get_repo(REPO_NAME)
     
@@ -66,7 +68,6 @@ def main():
     
     new_readme_content = update_readme(language_stats)
     
-    # Update README.md
     try:
         readme = repo.get_contents("README.md")
         current_content = readme.decoded_content.decode()
