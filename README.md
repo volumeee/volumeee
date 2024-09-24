@@ -27,7 +27,7 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 [![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,laravel,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
-```typescript
+typescript
 From: 01 January 2020 - To: 24 September 2024
 
 Total Time: 189 hrs 0 mins
@@ -40,7 +40,7 @@ HTML                 6 hrs 0 mins  ░░░░░░░░░░░░░░░
 PHP                 2 hrs 30 mins  ░░░░░░░░░░░░░░░░░░░░    1.32%
 Python               2 hrs 0 mins  ░░░░░░░░░░░░░░░░░░░░    1.06%
 Unknown              1 hrs 0 mins  ░░░░░░░░░░░░░░░░░░░░    0.53%
-```
+
 <!-- language_times_end -->
 
 
