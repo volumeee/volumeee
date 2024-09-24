@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timezone
 import re
 import logging
-from github import Github
+from github import Github, Auth
 from collections import defaultdict
 
 logging.basicConfig(level=logging.INFO)
@@ -13,9 +13,9 @@ README_FILE = 'README.md'
 START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)
 
 def get_repos():
-    g = Github(GITHUB_TOKEN)
-    user = g.get_user()
-    return user.get_repos()
+    auth = Auth.Token(GITHUB_TOKEN)
+    g = Github(auth=auth)
+    return g.get_user().get_repos()
 
 def calculate_language_times(repos, since):
     language_times = defaultdict(int)
