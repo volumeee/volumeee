@@ -28,7 +28,7 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 
 <!-- language_times_start -->
 ```typescript
-From: 01 January 2020 - To: 23 September 2024
+From: 01 January 2020 - To: 24 September 2024
 
 Total Time: 189 hrs 0 mins
 
