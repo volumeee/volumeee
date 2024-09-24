@@ -30,7 +30,7 @@ Bagus doesn't just code; he creates spells and enchantments, turning lines of co
 ```typescript
 From: 13 March 2022 - To: 24 September 2024
 
-Total Time: 189 hrs 0 mins (926 days)
+Total Time: 189 hrs 0 mins  (926 days)
 
 JavaScript                95 hrs 0 mins ██████████░░░░░░░░░░  50.26 %
 TypeScript                56 hrs 0 mins █████░░░░░░░░░░░░░░░  29.63 %
