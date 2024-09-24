@@ -63,11 +63,11 @@ def update_readme(language_times):
     end_date = now 
     duration = (end_date - start_date).days
 
-    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\nTotal Time: {format_time(total_time)}  ({duration} days)\n\n'
+    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y"):>30} - To: {end_date.strftime("%d %B %Y"):>30}\n\nTotal Time: {format_time(total_time):>20}  ({duration} days)\n\n'
     for language, time in sorted_languages:
-        percent = (time / total_time) * 100 if total_time > 0 else 0
-        graph = create_text_graph(percent)
-        new_content += f'{language:<25} {formatted_time[language]:<10} {graph:<30} {formatted_percentages[language]:>8}\n'
+      percent = (time / total_time) * 100 if total_time > 0 else 0
+      graph = create_text_graph(percent)
+      new_content += f'{language:>25} {formatted_time[language]:>10} {graph} {formatted_percentages[language]:>8}\n'
     new_content += '```\n'
 
     with open(README_FILE, 'r') as f:
