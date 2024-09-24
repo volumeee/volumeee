@@ -1,86 +1,91 @@
+import requests
+from collections import defaultdict
 import os
-from datetime import datetime, timezone
-from github import Github
+from datetime import datetime
 
-# Constants
-START_DATE = datetime(2023, 1, 1, tzinfo=timezone.utc)  # Adjust this to your actual start date
+GITHUB_USERNAME = 'volumeee'
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+README_FILE = 'README.md'
 
-def get_stored_times():
-    stored_times = {}
-    with open('README.md', 'r') as file:
-        content = file.read()
-        if '<!-- language_times_start -->' in content:
-            start_index = content.index('<!-- language_times_start -->') + len('<!-- language_times_start -->')
-            end_index = content.index('<!-- language_times_end -->')
-            times_section = content[start_index:end_index].strip()
-            for line in times_section.splitlines():
-                parts = line.split()
-                if len(parts) >= 2:  # Changed to allow at least language and time
-                    lang = parts[0]
-                    time_str = parts[1]
-                    try:
-                        hours, minutes = map(int, time_str.split('hrs'))
-                        total_minutes = hours * 60 + minutes
-                        stored_times[lang] = stored_times.get(lang, 0) + total_minutes
-                    except ValueError:
-                        print(f"Skipping line due to format error: {line}")
-    return stored_times
+def get_repos(username):
+    url = f'https://api.github.com/users/{username}/repos'
+    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'})
+    repos = response.json()
+    return repos
 
-def fetch_language_times(token):
-    g = Github(token)
-    repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
-    total_times = {}
-    for commit in repo.get_commits():
-        languages = commit.get_stats().get('additions', {})
-        for lang, count in languages.items():
-            total_times[lang] = total_times.get(lang, 0) + count  # Aggregate usage
-    return total_times
+def get_commits(repo_name):
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
+    response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'})
+    commits = response.json()
+    return commits
 
-def format_time(minutes):
-    hours = minutes // 60
-    minutes = minutes % 60
-    return f"{hours}h {minutes}m"
+def calculate_time_spent():
+    repos = get_repos(GITHUB_USERNAME)
+    language_times = defaultdict(int)
 
-def calculate_percentages(stored_times, total_time):
-    return {lang: (time / total_time * 100 if total_time > 0 else 0) for lang, time in stored_times.items()}
+    for repo in repos:
+        repo_name = repo['name']
+        language = repo['language'] if repo['language'] else 'Unknown'
+        commits = get_commits(repo_name)
+        # Assuming each commit represents an hour of work (for simplicity)
+        language_times[language] += len(commits)
+    
+    return language_times
+
+def format_time(hours):
+    h = int(hours)
+    m = int((hours - h) * 60)
+    return f'{h} hrs {m} mins'
+
+def calculate_percentages(language_times, total_time):
+    percentages = {}
+    for language, time in language_times.items():
+        percentages[language] = (time / total_time) * 100
+    return percentages
 
 def create_text_graph(percent):
     bar_length = 20
     filled_length = int(bar_length * percent // 100)
-    return '█' * filled_length + '-' * (bar_length - filled_length)
+    bar = '█' * filled_length + '░' * (bar_length - filled_length)
+    return bar
 
-def update_readme(new_times):
-    stored_times = get_stored_times()
-    for lang, minutes in new_times.items():
-        stored_times[lang] = stored_times.get(lang, 0) + minutes
-    
-    total_time = sum(stored_times.values())
-    percentages = calculate_percentages(stored_times, total_time)
-    
-    sorted_languages = sorted(stored_times.items(), key=lambda x: x[1], reverse=True)
-    
-    now = datetime.now(timezone.utc)
-    start_date = START_DATE.strftime("%d %B %Y")
+def update_readme(language_times):
+    total_time = sum(language_times.values())
+    percentages = calculate_percentages(language_times, total_time)
+
+    formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
+    formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
+
+    sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
+
+    now = datetime.now()
+    start_date = "13 March 2023"
     end_date = now.strftime("%d %B %Y")
-    
-    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
-    
-    for language, minutes in sorted_languages:
-        time_str = format_time(minutes)
-        percent = percentages[language]
-        graph = create_text_graph(percent)
-        new_content += f'{language:<18} {time_str:>14}  {graph} {percent:>7.2f}%\n'
-    
-    new_content += '```\n'
-    
-    with open('README.md', 'r+') as file:
-        content = file.read()
-        new_file_content = content.replace(content[content.index('<!-- language_times_start -->'):content.index('<!-- language_times_end -->')], new_content)
-        file.seek(0)
-        file.write(new_file_content)
-        file.truncate()
 
-if __name__ == "__main__":
-    token = os.getenv('GH_TOKEN')
-    new_times = fetch_language_times(token)
-    update_readme(new_times)
+    new_content = f'```typescript\nFrom: {start_date} - To: {end_date}\n\nTotal Time: {format_time(total_time)}\n\n'
+    for language, time in sorted_languages:
+        percent = (time / total_time) * 100
+        graph = create_text_graph(percent)
+        new_content += f'{language:<25} {formatted_time[language]} {graph} {formatted_percentages[language]:>8}\n'
+    new_content += '```\n'
+
+    with open(README_FILE, 'r') as f:
+        readme_content = f.read()
+    
+    start_marker = '<!-- language_times_start -->'
+    end_marker = '<!-- language_times_end -->'
+
+    if start_marker in readme_content and end_marker in readme_content:
+        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
+    else:
+        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
+
+    with open(README_FILE, 'w') as f:
+        f.write(new_readme_content)
+
+def main():
+    language_times = calculate_time_spent()
+    update_readme(language_times)
+
+if __name__ == '__main__':
+    main()
