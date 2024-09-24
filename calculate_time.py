@@ -3,35 +3,38 @@ from datetime import datetime, timezone
 from github import Github
 
 # Constants
-START_DATE = datetime(2020, 1, 1, tzinfo=timezone.utc)  # Adjust this to your actual start date
+START_DATE = datetime(2023, 1, 1, tzinfo=timezone.utc)  # Adjust this to your actual start date
 
 def get_stored_times():
-    # Example: Retrieve existing data from README.md
+    # Initialize with existing data from README.md
     stored_times = {}
-    try:
-        with open('README.md', 'r') as file:
-            content = file.read()
-            # Extract the section between language_times_start and language_times_end
-            start = content.index("<!-- language_times_start -->")
-            end = content.index("<!-- language_times_end -->")
-            lang_section = content[start:end]
-            for line in lang_section.splitlines()[2:]:  # Skip header lines
+    with open('README.md', 'r') as file:
+        content = file.read()
+        # Extract the language times from the existing section
+        if '<!-- language_times_start -->' in content:
+            start_index = content.index('<!-- language_times_start -->') + len('<!-- language_times_start -->')
+            end_index = content.index('<!-- language_times_end -->')
+            times_section = content[start_index:end_index].strip()
+            for line in times_section.splitlines():
                 parts = line.split()
-                if len(parts) >= 2:
+                if len(parts) >= 3:
                     lang = parts[0]
-                    time_str = parts[1]  # "XX hrs YY mins"
-                    hours, mins = map(int, time_str.replace('hrs', '').replace('mins', '').split())
-                    total_minutes = hours * 60 + mins
-                    stored_times[lang] = total_minutes
-    except Exception as e:
-        print(f"Error reading stored times: {e}")
-    
+                    time_str = parts[1]  # e.g., "95"
+                    hours, minutes = map(int, time_str.split('hrs'))
+                    total_minutes = hours * 60 + minutes
+                    stored_times[lang] = stored_times.get(lang, 0) + total_minutes
     return stored_times
+
+def fetch_language_times(token):
+    g = Github(token)
+    repo = g.get_repo(os.getenv('GITHUB_REPOSITORY'))
+    languages = repo.get_languages()
+    return {lang: minutes for lang, minutes in languages.items()}  # Convert to minutes as needed
 
 def format_time(minutes):
     hours = minutes // 60
     minutes = minutes % 60
-    return f"{hours} hrs {minutes} mins"
+    return f"{hours}h {minutes}m"
 
 def calculate_percentages(stored_times, total_time):
     return {lang: (time / total_time * 100 if total_time > 0 else 0) for lang, time in stored_times.items()}
@@ -68,21 +71,13 @@ def update_readme(new_times):
     # Update README.md
     with open('README.md', 'r+') as file:
         content = file.read()
-        # Update the section between language_times_start and language_times_end
-        updated_content = content.replace(
-            content[content.index("<!-- language_times_start -->"):content.index("<!-- language_times_end -->")],
-            f'<!-- language_times_start -->\n{new_content}<!-- language_times_end -->'
-        )
+        # Replace the old language times section with new content
+        new_file_content = content.replace(content[content.index('<!-- language_times_start -->'):content.index('<!-- language_times_end -->')], new_content)
         file.seek(0)
-        file.write(updated_content)
+        file.write(new_file_content)
         file.truncate()
 
 if __name__ == "__main__":
-    new_times = {
-        'JavaScript': 5700,  # Example: total time in minutes
-        'TypeScript': 3450,
-        'Java': 840,
-        'PHP': 150,
-        'Python': 120,
-    }  # Populate this dictionary with your actual language times in minutes
+    token = os.getenv('GH_TOKEN')
+    new_times = fetch_language_times(token)
     update_readme(new_times)
