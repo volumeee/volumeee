@@ -7,7 +7,7 @@ import pytz
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
-START_DATE = "13 March 2022"  # Custom start date
+START_DATE = "01 March 2020"  # Custom start date
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
