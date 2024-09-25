@@ -23,7 +23,7 @@ jobs:
     - name: Run update script
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: python update_language_stats.py
+      run: python calculate_time.py
     - name: Commit and push if changed
       run: |
         git config --global user.email "github-actions@example.com"
