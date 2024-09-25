@@ -7,7 +7,7 @@ import pytz
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
-START_DATE = "13 March 2022"  # Customizable start date
+START_DATE = "13 March 2022"  # Custom start date
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -22,15 +22,15 @@ def get_commits(repo_name, since_date):
     commits = response.json()
     return commits
 
-def calculate_time_spent(since_date):
+def calculate_time_spent(start_date):
     repos = get_repos(GITHUB_USERNAME)
     language_times = defaultdict(int)
     for repo in repos:
         repo_name = repo['name']
         language = repo['language'] if repo['language'] else 'Unknown'
-        commits = get_commits(repo_name, since_date)
-        # Estimate time spent: 30 minutes per commit
-        language_times[language] += len(commits) * 0.5
+        commits = get_commits(repo_name, start_date)
+        # Count the number of commits as hours
+        language_times[language] += len(commits)
     
     return language_times
 
@@ -51,21 +51,24 @@ def create_text_graph(percent):
     bar = '█' * filled_length + '░' * (bar_length - filled_length)
     return bar
 
-def update_readme(language_times, start_date, end_date):
+def update_readme(language_times, start_date):
     total_time = sum(language_times.values())
     percentages = calculate_percentages(language_times, total_time)
     formatted_time = {lang: format_time(time) for lang, time in language_times.items()}
     formatted_percentages = {lang: f'{percent:.2f} %' for lang, percent in percentages.items()}
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
+    now = datetime.now(pytz.timezone('Asia/Jakarta'))
+    end_date = now 
     duration = (end_date - start_date).days
+    
     new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\nTotal Time: {format_time(total_time)}  ({duration} days)\n\n'
     for language, time in sorted_languages:
         percent = (time / total_time) * 100 if total_time > 0 else 0
         graph = create_text_graph(percent)
         new_content += f'{language:<25} {formatted_time[language]:<10} {graph:>20} {formatted_percentages[language]:>8}\n'
     new_content += '```\n'
-
+    
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
     
@@ -75,17 +78,14 @@ def update_readme(language_times, start_date, end_date):
         new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
     else:
         new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
-
+    
     with open(README_FILE, 'w') as f:
         f.write(new_readme_content)
 
 def main():
-    wib = pytz.timezone('Asia/Jakarta')
-    start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=wib)
-    end_date = datetime.now(wib)
-    
+    start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
     language_times = calculate_time_spent(start_date)
-    update_readme(language_times, start_date, end_date)
+    update_readme(language_times, start_date)
 
 if __name__ == '__main__':
     main()
