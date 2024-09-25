@@ -8,13 +8,9 @@
 [![Medium](https://img.shields.io/badge/-@bagus251001-black?style=flat&logo=Medium&logoColor=white)](https://medium.com/@bagus251001)
 ![Visitor](https://komarev.com/ghpvc/?username=volumeee&label=Visitor&color=2bbc8a)
 
-Bagus is not just a Software Engineer; he's a master wizard in the realm of programming. With the flick of his virtual wand, he commands the elemental forces of JavaScript and TypeScript, conjuring efficient and scalable applications from the ether of the digital realm.
+Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta. I'm all about crafting cool web and mobile experiences. On the backend, I'm your go-to guy for Express.js, Prisma, and Laravel. Frontend? I've got you covered with React.js, React Native, and Next.js. I've cut my teeth at PT. Habibi Digital Nusantara, getting my hands dirty with real-world projects. But here's the thing - I'm not just about what I know now. I'm always itching to learn more, especially when it comes to IoT and AI. They're like my new tech crushes! I'm all about cooking up innovative solutions that make people go 'Wow!' So, if you're looking for someone who's equal parts code ninja and idea machine
 
-In the enchanted world of coding, Bagus is a spellcaster of the highest order, seamlessly weaving together frontend and backend elements to create magical user experiences. His expertise in mobile app development and backend services allows him to transform complex challenges into elegant solutions with a touch of his mystical code.
-
-When not immersed in the arcane arts of software development, Bagus roams the tech community, forging connections and exploring the latest technological marvels. His quest for knowledge and innovation fuels his passion, making him a true sorcerer of the digital age.
-
-Bagus doesn't just code; he creates spells and enchantments, turning lines of code into masterpieces of technology. With every project, he adds a touch of magic, leaving a trail of wonder and excellence in his wake.
+#### Learn more at [bagus-erwanto.vercel.app](https://bagus-erwanto.vercel.app/about)
 
 ## 🛠 &nbsp;Technologies & Tools
 
