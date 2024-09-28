@@ -25,9 +25,9 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 
 <!-- language_times_start -->
 ```typescript
-From: 01 March 2020 - To: 27 September 2024
+From: 01 March 2020 - To: 28 September 2024
 
-Total Time: 189 hrs 0 mins  (1671 days)
+Total Time: 189 hrs 0 mins  (1672 days)
 
 JavaScript                95 hrs 0 mins ██████████░░░░░░░░░░  50.26 %
 TypeScript                56 hrs 0 mins █████░░░░░░░░░░░░░░░  29.63 %
