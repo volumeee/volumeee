@@ -7,7 +7,7 @@ import pytz
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
-START_DATE = "01 March 2020"
+START_DATE = "01 March 2022"
 ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python', 'Kotlin', 'Java', 'C++']
 
 def get_repos(username):
