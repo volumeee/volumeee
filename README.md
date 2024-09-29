@@ -27,16 +27,28 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 ```typescript
 From: 01 March 2020 - To: 29 September 2024
 
-Total Time: 189 hrs 0 mins  (1673 days)
+Total Time: 3734 hrs 15 mins  (1673 days)
 
-JavaScript                95 hrs 0 mins ██████████░░░░░░░░░░  50.26 %
-TypeScript                56 hrs 0 mins █████░░░░░░░░░░░░░░░  29.63 %
-Java                      14 hrs 0 mins █░░░░░░░░░░░░░░░░░░░   7.41 %
-Kotlin                    11 hrs 0 mins █░░░░░░░░░░░░░░░░░░░   5.82 %
-HTML                      6 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   3.17 %
-C++                       3 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   1.59 %
-Python                    2 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   1.06 %
-PHP                       1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   0.53 %
-Unknown                   1 hrs 0 mins ░░░░░░░░░░░░░░░░░░░░   0.53 %
+JavaScript                2346 hrs 15 mins ████████████░░░░░░░░  62.83 %
+CSS                       440 hrs 3 mins  ██░░░░░░░░░░░░░░░░░░  11.78 %
+HTML                      422 hrs 26 mins ██░░░░░░░░░░░░░░░░░░  11.31 %
+PHP                       406 hrs 33 mins ██░░░░░░░░░░░░░░░░░░  10.89 %
+TypeScript                47 hrs 50 mins  ░░░░░░░░░░░░░░░░░░░░   1.28 %
+SCSS                      31 hrs 13 mins  ░░░░░░░░░░░░░░░░░░░░   0.84 %
+Kotlin                    6 hrs 29 mins   ░░░░░░░░░░░░░░░░░░░░   0.17 %
+C++                       5 hrs 41 mins   ░░░░░░░░░░░░░░░░░░░░   0.15 %
+Blade                     4 hrs 46 mins   ░░░░░░░░░░░░░░░░░░░░   0.13 %
+Java                      4 hrs 45 mins   ░░░░░░░░░░░░░░░░░░░░   0.13 %
+Less                      3 hrs 23 mins   ░░░░░░░░░░░░░░░░░░░░   0.09 %
+CMake                     3 hrs 14 mins   ░░░░░░░░░░░░░░░░░░░░   0.09 %
+Dart                      3 hrs 11 mins   ░░░░░░░░░░░░░░░░░░░░   0.09 %
+Ruby                      2 hrs 4 mins    ░░░░░░░░░░░░░░░░░░░░   0.06 %
+Python                    1 hrs 41 mins   ░░░░░░░░░░░░░░░░░░░░   0.05 %
+Objective-C++             1 hrs 17 mins   ░░░░░░░░░░░░░░░░░░░░   0.03 %
+Objective-C               1 hrs 15 mins   ░░░░░░░░░░░░░░░░░░░░   0.03 %
+TSQL                      0 hrs 55 mins   ░░░░░░░░░░░░░░░░░░░░   0.02 %
+C                         0 hrs 39 mins   ░░░░░░░░░░░░░░░░░░░░   0.02 %
+Swift                     0 hrs 17 mins   ░░░░░░░░░░░░░░░░░░░░   0.01 %
+Hack                      0 hrs 9 mins    ░░░░░░░░░░░░░░░░░░░░   0.00 %
 ```
 <!-- language_times_end -->
