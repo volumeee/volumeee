@@ -25,18 +25,18 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 
 <!-- language_times_start -->
 ```typescript
-From: 01 March 2020 - To: 29 September 2024
+From: 01 March 2022 - To: 29 September 2024
 
-Total Time: 368 hrs 10 mins  (1673 days)
+Total Time: 3637 hrs 20 mins  (943 days)
 
-JavaScript                234 hrs 37 mins ████████████░░░░░░░░  63.73 %
-CSS                       44 hrs 0 mins   ██░░░░░░░░░░░░░░░░░░  11.95 %
-HTML                      42 hrs 14 mins  ██░░░░░░░░░░░░░░░░░░  11.47 %
-PHP                       40 hrs 39 mins  ██░░░░░░░░░░░░░░░░░░  11.04 %
-TypeScript                4 hrs 47 mins   ░░░░░░░░░░░░░░░░░░░░   1.30 %
-Kotlin                    0 hrs 38 mins   ░░░░░░░░░░░░░░░░░░░░   0.18 %
-C++                       0 hrs 34 mins   ░░░░░░░░░░░░░░░░░░░░   0.15 %
-Java                      0 hrs 28 mins   ░░░░░░░░░░░░░░░░░░░░   0.13 %
-Python                    0 hrs 10 mins   ░░░░░░░░░░░░░░░░░░░░   0.05 %
+JavaScript                2310 hrs 52 mins ████████████░░░░░░░░  63.53 %
+CSS                       439 hrs 29 mins ██░░░░░░░░░░░░░░░░░░  12.08 %
+HTML                      422 hrs 26 mins ██░░░░░░░░░░░░░░░░░░  11.61 %
+PHP                       398 hrs 5 mins  ██░░░░░░░░░░░░░░░░░░  10.94 %
+TypeScript                47 hrs 50 mins  ░░░░░░░░░░░░░░░░░░░░   1.32 %
+Kotlin                    6 hrs 29 mins   ░░░░░░░░░░░░░░░░░░░░   0.18 %
+C++                       5 hrs 41 mins   ░░░░░░░░░░░░░░░░░░░░   0.16 %
+Java                      4 hrs 45 mins   ░░░░░░░░░░░░░░░░░░░░   0.13 %
+Python                    1 hrs 41 mins   ░░░░░░░░░░░░░░░░░░░░   0.05 %
 ```
 <!-- language_times_end -->
