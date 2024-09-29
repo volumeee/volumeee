@@ -8,6 +8,7 @@ GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = "01 March 2020"
+ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python']
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -19,7 +20,7 @@ def get_repo_languages(repo_name):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/languages'
     response = requests.get(url, headers={'Authorization': f'token {GITHUB_TOKEN}'})
     languages = response.json()
-    return languages
+    return {lang: bytes for lang, bytes in languages.items() if lang in ALLOWED_LANGUAGES}
 
 def get_commits(repo_name, since_date, until_date):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
@@ -37,7 +38,7 @@ def calculate_time_spent(start_date, end_date):
         repo_name = repo['name']
         commits = get_commits(repo_name, start_date, end_date)
         
-        if len(commits) > 0:  # Only consider repos with commits in the given time range
+        if len(commits) > 0:  
             languages = get_repo_languages(repo_name)
             repo_total_bytes = sum(languages.values())
             total_bytes += repo_total_bytes
@@ -45,7 +46,7 @@ def calculate_time_spent(start_date, end_date):
             for language, bytes in languages.items():
                 language_times[language] += bytes
     
-    # Convert bytes to hours (assuming 100 bytes = 1 minute of coding time)
+
     hours_per_byte = 1 / (100 * 60)
     for language in language_times:
         language_times[language] *= hours_per_byte
