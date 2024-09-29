@@ -47,7 +47,7 @@ def calculate_time_spent(start_date, end_date):
                 language_times[language] += bytes
     
 
-    hours_per_byte = 1 / (1000 * 60)
+    hours_per_byte = 1 / (100 * 60)
     for language in language_times:
         language_times[language] *= hours_per_byte
     
