@@ -27,13 +27,16 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 ```typescript
 From: 01 March 2020 - To: 29 September 2024
 
-Total Time: 3664 hrs 50 mins  (1673 days)
+Total Time: 368 hrs 10 mins  (1673 days)
 
-JavaScript                2346 hrs 15 mins ████████████░░░░░░░░  64.02 %
-CSS                       440 hrs 3 mins  ██░░░░░░░░░░░░░░░░░░  12.01 %
-HTML                      422 hrs 26 mins ██░░░░░░░░░░░░░░░░░░  11.53 %
-PHP                       406 hrs 33 mins ██░░░░░░░░░░░░░░░░░░  11.09 %
-TypeScript                47 hrs 50 mins  ░░░░░░░░░░░░░░░░░░░░   1.31 %
-Python                    1 hrs 41 mins   ░░░░░░░░░░░░░░░░░░░░   0.05 %
+JavaScript                234 hrs 37 mins ████████████░░░░░░░░  63.73 %
+CSS                       44 hrs 0 mins   ██░░░░░░░░░░░░░░░░░░  11.95 %
+HTML                      42 hrs 14 mins  ██░░░░░░░░░░░░░░░░░░  11.47 %
+PHP                       40 hrs 39 mins  ██░░░░░░░░░░░░░░░░░░  11.04 %
+TypeScript                4 hrs 47 mins   ░░░░░░░░░░░░░░░░░░░░   1.30 %
+Kotlin                    0 hrs 38 mins   ░░░░░░░░░░░░░░░░░░░░   0.18 %
+C++                       0 hrs 34 mins   ░░░░░░░░░░░░░░░░░░░░   0.15 %
+Java                      0 hrs 28 mins   ░░░░░░░░░░░░░░░░░░░░   0.13 %
+Python                    0 hrs 10 mins   ░░░░░░░░░░░░░░░░░░░░   0.05 %
 ```
 <!-- language_times_end -->
