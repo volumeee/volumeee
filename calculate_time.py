@@ -8,7 +8,7 @@ GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = "01 March 2020"
-ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python']
+ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python', 'Kotlin', 'Java', 'C++']
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -47,7 +47,7 @@ def calculate_time_spent(start_date, end_date):
                 language_times[language] += bytes
     
 
-    hours_per_byte = 1 / (100 * 60)
+    hours_per_byte = 1 / (1000 * 60)
     for language in language_times:
         language_times[language] *= hours_per_byte
     
