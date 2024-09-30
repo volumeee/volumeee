@@ -2,9 +2,11 @@ name: Update Language Statistics
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   schedule:
-    - cron: '0 22 * * *'  # Run daily at 10 PM UTC, which is 5 AM WIB
+    - cron: '0 0 * * *'   # Run daily at 00:00 UTC
+    - cron: '0 23 * * *'  # Run daily at 23:00 UTC
+    - cron: '0 2 * * *'   # Run daily at 02:00 UTC
   workflow_dispatch: # allows manual trigger
 
 jobs:
