@@ -25,9 +25,9 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 
 <!-- language_times_start -->
 ```typescript
-From: 01 March 2022 - To: 09 October 2024
+From: 01 March 2022 - To: 10 October 2024
 
-Total Time: 727 hrs 28 mins  (953 days)
+Total Time: 727 hrs 28 mins  (954 days)
 
 JavaScript                462 hrs 10 mins ████████████░░░░░░░░  63.53 %
 CSS                       87 hrs 53 mins  ██░░░░░░░░░░░░░░░░░░  12.08 %
