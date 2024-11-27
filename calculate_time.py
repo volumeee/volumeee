@@ -153,23 +153,22 @@ def create_text_graph(percent):
     return '█' * filled_length + '░' * (bar_length - filled_length)
 
 def update_readme(language_times, start_date, end_date):
-    language_times = {lang: time for lang, time in language_times.items() 
-                     if lang in ALLOWED_LANGUAGES}
-    
     total_time = sum(language_times.values())
     percentages = calculate_percentages(language_times, total_time)
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
-    new_content = f"text\n💻 Coding Time Tracker\n\n"
-    new_content += f"From: {start_date.strftime('%d %B %Y')}\n"
-    new_content += f"Total Time: {format_time(total_time)}\n\n"
+    duration = (end_date - start_date).days
+    
+    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
+    new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
     for language, time in sorted_languages:
+        formatted_time = format_time(time)
         percent = percentages[language]
-        if percent >= 1:  # Only show languages with >= 1%
-            new_content += f"{language:<12} {format_time(time):<15} {create_text_graph(percent)} {percent:.1f}%\n"
+        graph = create_text_graph(percent)
+        new_content += f'{language:<25} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
     
-    new_content += "```\n"
+    new_content += '```\n'
     
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
