@@ -185,7 +185,7 @@ def update_readme(language_times, start_date, end_date):
 
 def main():
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
-    end_date = datetime
+    end_date = datetime.now(pytz.UTC)  
     language_times = calculate_time_spent(start_date, end_date)
     update_readme(language_times, start_date, end_date)
 
