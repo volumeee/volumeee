@@ -12,7 +12,6 @@ START_DATE = "01 March 2022"
 ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python', 'Kotlin', 'Java', 'C++']
 
 def get_user_repos(username, token):
-    """Get all repositories for a user (including private)"""
     repos = []
     page = 1
     while True:
@@ -27,7 +26,6 @@ def get_user_repos(username, token):
     return repos
 
 def get_org_repos(token):
-    """Get repositories from organizations the user belongs to"""
     repos = []
     # First get list of organizations
     url = 'https://api.github.com/user/orgs'
@@ -48,7 +46,6 @@ def get_org_repos(token):
     return repos
 
 def get_repo_languages(repo_full_name, token):
-    """Get languages for a repository"""
     url = f'https://api.github.com/repos/{repo_full_name}/languages'
     headers = {'Authorization': f'token {token}'}
     response = requests.get(url, headers=headers)
@@ -56,7 +53,6 @@ def get_repo_languages(repo_full_name, token):
     return {lang: bytes for lang, bytes in languages.items() if lang in ALLOWED_LANGUAGES}
 
 def get_commits(repo_full_name, since_date, until_date, token):
-    """Get commits for a repository within a date range"""
     commits = []
     page = 1
     while True:
@@ -77,7 +73,6 @@ def get_commits(repo_full_name, since_date, until_date, token):
     return commits
 
 def calculate_time_spent(start_date, end_date):
-    """Calculate time spent coding in each language"""
     language_times = defaultdict(float)
     total_bytes = 0
     
@@ -106,24 +101,20 @@ def calculate_time_spent(start_date, end_date):
     return language_times
 
 def format_time(hours):
-    """Format hours into readable string"""
     h = int(hours)
     m = int((hours - h) * 60)
     return f'{h} hrs {m} mins'
 
 def calculate_percentages(language_times, total_time):
-    """Calculate percentage for each language"""
     return {lang: (time / total_time) * 100 if total_time > 0 else 0 
             for lang, time in language_times.items()}
 
 def create_text_graph(percent):
-    """Create a text-based graph representation"""
     bar_length = 20
     filled_length = int(bar_length * percent // 100)
     return '█' * filled_length + '░' * (bar_length - filled_length)
 
 def update_readme(language_times, start_date, end_date):
-    """Update README.md with the calculated statistics"""
     total_time = sum(language_times.values())
     percentages = calculate_percentages(language_times, total_time)
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
