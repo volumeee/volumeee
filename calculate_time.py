@@ -25,21 +25,6 @@ def get_repos(username):
     
     return repos
 
-def get_commit_stats(commit_url, headers):
-    response = requests.get(commit_url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        if 'stats' in data:
-            return data['stats'].get('total', 0)
-    return 0
-
-def get_repo_languages(repo_name):
-    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/languages'
-    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
-    response = requests.get(url, headers=headers)
-    languages = response.json()
-    return {lang: bytes for lang, bytes in languages.items() if lang in ALLOWED_LANGUAGES}
-
 def get_commits(repo_name, since_date, until_date):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
@@ -64,6 +49,58 @@ def get_commits(repo_name, since_date, until_date):
         
     return all_commits
 
+def get_commit_stats(commit_url, headers):
+    response = requests.get(commit_url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if 'stats' in data:
+            return data['stats']
+    return {'additions': 0, 'deletions': 0}
+
+def get_repo_languages(repo_name):
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/languages'
+    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
+    response = requests.get(url, headers=headers)
+    languages = response.json()
+    return {lang: bytes for lang, bytes in languages.items() if lang in ALLOWED_LANGUAGES}
+
+def get_commit_time_difference(commits):
+    if len(commits) < 2:
+        return 0
+    
+    commit_times = []
+    for commit in commits:
+        commit_date = datetime.strptime(commit['commit']['author']['date'], '%Y-%m-%dT%H:%M:%SZ')
+        commit_times.append(commit_date)
+    
+    commit_times.sort()
+    
+    total_time = 0
+    for i in range(len(commit_times)-1):
+        diff = commit_times[i+1] - commit_times[i]
+        if diff.total_seconds() < 14400:  # 4 hours in seconds
+            total_time += diff.total_seconds()
+    
+    return total_time / 3600  # Convert to hours
+
+def calculate_commit_weight(stats):
+    additions = stats.get('additions', 0)
+    deletions = stats.get('deletions', 0)
+    total_changes = additions + deletions
+    
+    if total_changes < 10:
+        return 0.25  # 15 minutes
+    elif total_changes < 50:
+        return 0.5   # 30 minutes
+    elif total_changes < 200:
+        return 1     # 1 hour
+    else:
+        return 1.5   # 1.5 hours
+
+def is_valid_commit(commit):
+    message = commit['commit']['message'].lower()
+    return not any(x in message for x in ['merge', 'automated', 'bot'])
+
 def calculate_time_spent(start_date, end_date):
     repos = get_repos(GITHUB_USERNAME)
     language_times = defaultdict(float)
@@ -71,21 +108,33 @@ def calculate_time_spent(start_date, end_date):
     
     for repo in repos:
         repo_name = repo['name']
-        commits = get_commits(repo_name, start_date, end_date)
+        all_commits = get_commits(repo_name, start_date, end_date)
+        
+        # Filter out invalid commits
+        commits = [commit for commit in all_commits if is_valid_commit(commit)]
         
         if commits:
             languages = get_repo_languages(repo_name)
-            total_changes = sum(get_commit_stats(commit['url'], headers) for commit in commits)
+            if not languages:
+                continue
+                
+            # Calculate time based on commit timestamps
+            timestamp_based_time = get_commit_time_difference(commits)
             
-            if total_changes > 0:
+            # Calculate time based on commit weights
+            weight_based_time = 0
+            for commit in commits:
+                stats = get_commit_stats(commit['url'], headers)
+                weight_based_time += calculate_commit_weight(stats)
+            
+            # Use the larger of the two time calculations
+            total_time = max(timestamp_based_time, weight_based_time)
+            
+            if total_time > 0:
+                # Distribute time across languages based on their proportion
                 for language, bytes in languages.items():
-                    # Calculate time based on both code size and commit activity
                     language_proportion = bytes / sum(languages.values())
-                    commit_time = total_changes * language_proportion
-                    
-                    # Estimate: 30 minutes base time per commit + additional time based on changes
-                    time_per_commit = 0.5 + (commit_time * 0.001)  # 0.001 hour per change
-                    language_times[language] += time_per_commit * len(commits)
+                    language_times[language] += total_time * language_proportion
     
     return language_times
 
@@ -110,16 +159,16 @@ def update_readme(language_times, start_date, end_date):
     
     duration = (end_date - start_date).days
     
-    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
-    new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
+    new_content = f"```text\n💻 Coding Time Tracker\n\n"
+    new_content += f"From: {start_date.strftime('%d %B %Y')}\n"
+    new_content += f"Total Time: {format_time(total_time)}\n\n"
     
     for language, time in sorted_languages:
-        formatted_time = format_time(time)
         percent = percentages[language]
-        graph = create_text_graph(percent)
-        new_content += f'{language:<25} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
+        if percent >= 1:  # Only show languages with >= 1%
+            new_content += f"{language:<12} {format_time(time):<15} {create_text_graph(percent)} {percent:.1f}%\n"
     
-    new_content += '```\n'
+    new_content += "```\n"
     
     with open(README_FILE, 'r') as f:
         readme_content = f.read()
@@ -136,7 +185,7 @@ def update_readme(language_times, start_date, end_date):
 
 def main():
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
-    end_date = datetime.now(pytz.UTC)
+    end_date = datetime
     language_times = calculate_time_spent(start_date, end_date)
     update_readme(language_times, start_date, end_date)
 
