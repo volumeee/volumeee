@@ -24,10 +24,10 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 [![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,laravel,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
-Coding Time Tracker🙆‍♂️```typescript
+```typescript
 From: 01 March 2022 - To: 27 November 2024
 
-Total Time: 181 hrs 13 mins  (1002 days)
+Coding Time Tracker🙆‍♂️Total Time: 181 hrs 13 mins  (1002 days)
 
 JavaScript                67 hrs 1 mins   ███████░░░░░░░░░░░░░  36.98 %
 TypeScript                59 hrs 46 mins  ██████░░░░░░░░░░░░░░  32.98 %
