@@ -8,7 +8,7 @@ GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = "01 March 2022"
-ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python', 'Kotlin', 'Java', 'C++']
+ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Kotlin', 'Java', 'C++']
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
@@ -28,25 +28,34 @@ def get_repos(username):
 def get_commits(repo_name, since_date, until_date):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/commits'
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
-    params = {
-        'since': since_date.isoformat(),
-        'until': until_date.isoformat(),
-        'author': GITHUB_USERNAME
-    }
     
+    # Add concurrent requests for pagination
     all_commits = []
     page = 1
+    per_page = 100
     
-    while True:
-        params['page'] = page
-        params['per_page'] = 100
-        response = requests.get(url, headers=headers, params=params)
-        commits = response.json()
-        if not commits or not isinstance(commits, list):
-            break
-        all_commits.extend(commits)
-        page += 1
-        
+    # Use session for connection pooling
+    with requests.Session() as session:
+        while True:
+            params = {
+                'since': since_date.isoformat(),
+                'until': until_date.isoformat(),
+                'author': GITHUB_USERNAME,
+                'page': page,
+                'per_page': per_page
+            }
+            
+            response = session.get(url, headers=headers, params=params)
+            commits = response.json()
+            
+            if not commits or not isinstance(commits, list):
+                break
+                
+            all_commits.extend(commits)
+            if len(commits) < per_page:  # Last page
+                break
+            page += 1
+    
     return all_commits
 
 def get_commit_stats(commit_url, headers):
@@ -102,39 +111,44 @@ def is_valid_commit(commit):
     return not any(x in message for x in ['merge', 'automated', 'bot'])
 
 def calculate_time_spent(start_date, end_date):
-    repos = get_repos(GITHUB_USERNAME)
+    current_date = start_date
+    chunk_size = timedelta(days=30)
     language_times = defaultdict(float)
-    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
     
-    for repo in repos:
-        repo_name = repo['name']
-        all_commits = get_commits(repo_name, start_date, end_date)
+    with requests.Session() as session:
+        repos = get_repos(GITHUB_USERNAME)
+        headers = {'Authorization': f'token {GITHUB_TOKEN}'}
         
-        # Filter out invalid commits
-        commits = [commit for commit in all_commits if is_valid_commit(commit)]
-        
-        if commits:
-            languages = get_repo_languages(repo_name)
-            if not languages:
-                continue
+        while current_date < end_date:
+            chunk_end = min(current_date + chunk_size, end_date)
+            
+            for repo in repos:
+                repo_name = repo['name']
+                commits = get_commits(repo_name, current_date, chunk_end)
                 
-            # Calculate time based on commit timestamps
-            timestamp_based_time = get_commit_time_difference(commits)
+                if not commits:
+                    continue
+                    
+                # Cache repository languages
+                languages = get_repo_languages(repo_name)
+                if not languages:
+                    continue
+                
+                valid_commits = [c for c in commits if is_valid_commit(c)]
+                if valid_commits:
+                    timestamp_based_time = get_commit_time_difference(valid_commits)
+                    weight_based_time = sum(
+                        calculate_commit_weight(get_commit_stats(commit['url'], headers))
+                        for commit in valid_commits
+                    )
+                    
+                    total_time = max(timestamp_based_time, weight_based_time)
+                    if total_time > 0:
+                        total_bytes = sum(languages.values())
+                        for language, bytes in languages.items():
+                            language_times[language] += total_time * (bytes / total_bytes)
             
-            # Calculate time based on commit weights
-            weight_based_time = 0
-            for commit in commits:
-                stats = get_commit_stats(commit['url'], headers)
-                weight_based_time += calculate_commit_weight(stats)
-            
-            # Use the larger of the two time calculations
-            total_time = max(timestamp_based_time, weight_based_time)
-            
-            if total_time > 0:
-                # Distribute time across languages based on their proportion
-                for language, bytes in languages.items():
-                    language_proportion = bytes / sum(languages.values())
-                    language_times[language] += total_time * language_proportion
+            current_date = chunk_end
     
     return language_times
 
@@ -158,8 +172,8 @@ def update_readme(language_times, start_date, end_date):
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
     duration = (end_date - start_date).days
-    
-    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
+    new_content =  f'Coding Time Tracker🙆‍♂️'
+    new_content += f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
     new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
     for language, time in sorted_languages:
