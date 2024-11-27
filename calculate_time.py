@@ -115,13 +115,17 @@ def create_text_graph(percent):
     return '█' * filled_length + '░' * (bar_length - filled_length)
 
 def update_readme(language_times, start_date, end_date):
+    # Define markers first
+    start_marker = '<!-- language_times_start -->'
+    end_marker = '<!-- language_times_end -->'
+    
     total_time = sum(language_times.values())
     percentages = calculate_percentages(language_times, total_time)
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
     duration = (end_date - start_date).days
     
-    new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
+    new_content = f'typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
     new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
     for language, time in sorted_languages:
@@ -130,7 +134,7 @@ def update_readme(language_times, start_date, end_date):
         graph = create_text_graph(percent)
         new_content += f'{language:<25} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
     
-    new_content += '```\n'
+    new_content += '\n'
     
     # Update README.md
     try:
@@ -139,23 +143,20 @@ def update_readme(language_times, start_date, end_date):
     except FileNotFoundError:
         readme_content = ''
     
-    start_marker = '<!-- language_times_start -->'
-    end_marker = '<!-- language_times_end -->'
-    
-if start_marker in readme_content and end_marker in readme_content:
-    new_readme_content = (
-        readme_content.split(start_marker)[0] + 
-        start_marker + '\n' + 
-        new_content + 
-        end_marker + 
-        readme_content.split(end_marker)[1]
-    )
-else:
-    new_readme_content = start_marker + '\n' + new_content + end_marker
-
+    if start_marker in readme_content and end_marker in readme_content:
+        new_readme_content = (
+            readme_content.split(start_marker)[0] + 
+            start_marker + '\n' + 
+            new_content + 
+            end_marker + 
+            readme_content.split(end_marker)[1]
+        )
+    else:
+        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
     
     with open(README_FILE, 'w') as f:
         f.write(new_readme_content)
+
 
 def main():
     """Main function to run the script"""
