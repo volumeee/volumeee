@@ -24,19 +24,19 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 [![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,laravel,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
-```typescript
-From: 01 March 2022 - To: 27 November 2024
+```text
+💻 Coding Time Tracker
 
-Total Time: 5975 hrs 38 mins  (1002 days)
+From: 01 March 2022
+Total Time: 255 hrs 43 mins
 
-JavaScript                1692 hrs 25 mins █████░░░░░░░░░░░░░░░  28.32 %
-TypeScript                1450 hrs 0 mins ████░░░░░░░░░░░░░░░░  24.27 %
-CSS                       1054 hrs 10 mins ███░░░░░░░░░░░░░░░░░  17.64 %
-Python                    926 hrs 37 mins ███░░░░░░░░░░░░░░░░░  15.51 %
-HTML                      256 hrs 20 mins ░░░░░░░░░░░░░░░░░░░░   4.29 %
-Java                      222 hrs 56 mins ░░░░░░░░░░░░░░░░░░░░   3.73 %
-PHP                       210 hrs 35 mins ░░░░░░░░░░░░░░░░░░░░   3.52 %
-Kotlin                    106 hrs 59 mins ░░░░░░░░░░░░░░░░░░░░   1.79 %
-C++                       55 hrs 31 mins  ░░░░░░░░░░░░░░░░░░░░   0.93 %
+Python       75 hrs 48 mins  █████░░░░░░░░░░░░░░░ 29.6%
+JavaScript   67 hrs 0 mins   █████░░░░░░░░░░░░░░░ 26.2%
+TypeScript   58 hrs 46 mins  ████░░░░░░░░░░░░░░░░ 23.0%
+Kotlin       14 hrs 41 mins  █░░░░░░░░░░░░░░░░░░░ 5.7%
+Java         11 hrs 22 mins  ░░░░░░░░░░░░░░░░░░░░ 4.4%
+C++          11 hrs 17 mins  ░░░░░░░░░░░░░░░░░░░░ 4.4%
+CSS          7 hrs 15 mins   ░░░░░░░░░░░░░░░░░░░░ 2.8%
+HTML         7 hrs 3 mins    ░░░░░░░░░░░░░░░░░░░░ 2.8%
 ```
 <!-- language_times_end -->
