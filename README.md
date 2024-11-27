@@ -24,7 +24,7 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 [![My Skills](https://skillicons.dev/icons?i=javascript,react,typescript,nextjs,java,kotlin,python,html,css,tailwind,nodejs,express,mysql,mongodb,prisma,figma,supabase,postgresql,laravel,firebase,vite,webpack,vercel,git,github,githubactions,androidstudio,arduino,postman,tensorflow&theme=light)](https://skillicons.dev)
 
 <!-- language_times_start -->
-text
+```
 💻 Coding Time Tracker
 
 From: 01 March 2022
