@@ -142,16 +142,17 @@ def update_readme(language_times, start_date, end_date):
     start_marker = '<!-- language_times_start -->'
     end_marker = '<!-- language_times_end -->'
     
-    if start_marker in readme_content and end_marker in readme_content:
-        new_readme_content = (
-            readme_content.split(start_marker)[0] + 
-            start_marker + '\n' + 
-            new_content + 
-            end_marker + 
-            readme_content.split(end_marker)[1]
-        )
-    else:
-        new_readme_n' + start_marker + '\n' + new_content + end_marker
+if start_marker in readme_content and end_marker in readme_content:
+    new_readme_content = (
+        readme_content.split(start_marker)[0] + 
+        start_marker + '\n' + 
+        new_content + 
+        end_marker + 
+        readme_content.split(end_marker)[1]
+    )
+else:
+    new_readme_content = start_marker + '\n' + new_content + end_marker
+
     
     with open(README_FILE, 'w') as f:
         f.write(new_readme_content)
