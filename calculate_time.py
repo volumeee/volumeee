@@ -173,7 +173,7 @@ def update_readme(language_times, start_date, end_date):
     
     duration = (end_date - start_date).days
     new_content = f'```typescript\nFrom: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n\n'
-    new_content +=  f'Coding Time Tracker🙆‍♂️'
+    new_content +=  f'Coding Time Tracker🙆‍♂️\n\n'
     new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
     for language, time in sorted_languages:
