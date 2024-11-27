@@ -6,11 +6,12 @@ import pytz
 
 GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
+GITHUB_ORGS = ['tupaitech','masterproyek']  
 README_FILE = 'README.md'
 START_DATE = "01 March 2022"
 ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Python', 'Kotlin', 'Java', 'C++']
 
-def get_repos(username):
+def get_user_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
     repos = []
@@ -22,6 +23,30 @@ def get_repos(username):
             break
         repos.extend(response.json())
         page += 1
+    
+    return repos
+
+def get_org_repos(org_name):
+    url = f'https://api.github.com/orgs/{org_name}/repos'
+    headers = {'Authorization': f'token {GITHUB_TOKEN}'}
+    repos = []
+    page = 1
+    
+    while True:
+        response = requests.get(url, headers=headers, params={'page': page, 'per_page': 100})
+        if not response.json():
+            break
+        repos.extend(response.json())
+        page += 1
+    
+    return repos
+
+def get_all_repos():
+    repos = get_user_repos(GITHUB_USERNAME)
+    
+    for org in GITHUB_ORGS:
+        org_repos = get_org_repos(org)
+        repos.extend(org_repos)
     
     return repos
 
@@ -102,41 +127,36 @@ def is_valid_commit(commit):
     return not any(x in message for x in ['merge', 'automated', 'bot'])
 
 def calculate_time_spent(start_date, end_date):
-    repos = get_repos(GITHUB_USERNAME)
+    repos = get_all_repos()
     language_times = defaultdict(float)
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
     
     for repo in repos:
-        repo_name = repo['name']
-        all_commits = get_commits(repo_name, start_date, end_date)
+        repo_name = repo['full_name'].split('/')[1]  
+        owner = repo['owner']['login']
         
-        # Filter out invalid commits
+        all_commits = get_commits(f"{owner}/{repo_name}", start_date, end_date)
         commits = [commit for commit in all_commits if is_valid_commit(commit)]
         
         if commits:
-            languages = get_repo_languages(repo_name)
+            languages = get_repo_languages(f"{owner}/{repo_name}")
             if not languages:
                 continue
                 
-            # Calculate time based on commit timestamps
             timestamp_based_time = get_commit_time_difference(commits)
+            weight_based_time = sum(calculate_commit_weight(get_commit_stats(commit['url'], headers)) 
+                                  for commit in commits)
             
-            # Calculate time based on commit weights
-            weight_based_time = 0
-            for commit in commits:
-                stats = get_commit_stats(commit['url'], headers)
-                weight_based_time += calculate_commit_weight(stats)
-            
-            # Use the larger of the two time calculations
             total_time = max(timestamp_based_time, weight_based_time)
             
             if total_time > 0:
-                # Distribute time across languages based on their proportion
+                total_bytes = sum(languages.values())
                 for language, bytes in languages.items():
-                    language_proportion = bytes / sum(languages.values())
+                    language_proportion = bytes / total_bytes
                     language_times[language] += total_time * language_proportion
     
     return language_times
+
 
 def format_time(hours):
     h = int(hours)
@@ -185,7 +205,7 @@ def update_readme(language_times, start_date, end_date):
 
 def main():
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
-    end_date = datetime.now(pytz.UTC)  
+    end_date = datetime.now(pytz.UTC)
     language_times = calculate_time_spent(start_date, end_date)
     update_readme(language_times, start_date, end_date)
 
