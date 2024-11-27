@@ -159,7 +159,6 @@ def update_readme(language_times, start_date, end_date):
 
 
 def main():
-    """Main function to run the script"""
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
     end_date = datetime.now(pytz.UTC)
     
