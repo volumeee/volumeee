@@ -1,6 +1,6 @@
 ## Hi 👋, Im Bagus Erwanto!
 
-[![Linkedin](https://img.shields.io/badge/-baguserwanto-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/baguserwanto/)
+[![Linkedin](https://img.shields.io/badge/-baguserwanto-blue?style=flat&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/bagus-erwanto/)
 [![Gmail](https://img.shields.io/badge/-bagus251001@gmail.com-c14438?style=flat&logo=Gmail&logoColor=white)](mailto:bagus251001@gmail.com)
 [![Instagram](https://img.shields.io/badge/-bagus_64byte-e4405f?style=flat&logo=Instagram&logoColor=white)](https://www.instagram.com/bagus_64byte/)
 [![Threads](https://img.shields.io/badge/-bagus_64byte-000000?style=flat&logo=threads&logoColor=white)](https://www.threads.net/@bagus_64byte)
