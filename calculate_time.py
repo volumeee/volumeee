@@ -8,7 +8,7 @@ GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = "01 March 2022"
-ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'Python', 'CSS', 'PHP', 'Kotlin', 'Java', 'C++']
+ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Kotlin', 'Java', 'C++']
 
 def get_repos(username):
     url = f'https://api.github.com/users/{username}/repos'
