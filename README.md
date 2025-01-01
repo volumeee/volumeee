@@ -50,7 +50,7 @@ PHP                       2 hrs 28 mins   ░░░░░░░░░░░░�
   </picture>
 <!-- <h4> _generated with [Platane/snk](https://platane.me/snk/)_</h4> -->
 </div>
-<!-- <br> -->
-<!-- <div align="left"> -->
+<br>
+<div align="left">
 <!--   <img src="https://github-readme-activity-graph.vercel.app/graph?username=fatkhurrhn&radius=16&theme=react&area=true&order=5" height="auto" alt="by fatkhurhhn"/> -->
 <!--   <img src="https://github-readme-activity-graph.vercel.app/graph?username=volumeee&theme=github-compact&radius=16" height="auto" alt="by volumeee"/> -->
