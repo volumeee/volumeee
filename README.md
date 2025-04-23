@@ -27,8 +27,8 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 ```typescript
 Coding Time Tracker🙆‍♂️
 
-From: 01 March 2022 - To: 22 April 2025
-Total Time: 189 hrs 43 mins  (1148 days)
+From: 01 March 2022 - To: 23 April 2025
+Total Time: 189 hrs 43 mins  (1149 days)
 
 TypeScript                67 hrs 48 mins  ███████░░░░░░░░░░░░░  35.74 %
 JavaScript                67 hrs 4 mins   ███████░░░░░░░░░░░░░  35.35 %
