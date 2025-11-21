@@ -3,7 +3,22 @@ name: Update Coding Stats
 on:
   schedule:
     - cron: '0 0 * * *'  # Daily at midnight
-  workflow_dispatch:
+  workflow_dispatch:  # Manual trigger
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'calculate_time.py'
+      - '.github/workflows/update_language_times.yml'
+      - 'requirements.txt'
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - 'calculate_time.py'
+      - '.github/workflows/update_language_times.yml'
 
 jobs:
   update:
