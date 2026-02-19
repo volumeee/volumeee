@@ -1,4 +1,3 @@
-import requests
 from collections import defaultdict
 import os
 from datetime import datetime, timedelta
@@ -10,6 +9,9 @@ from pathlib import Path
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
+import urllib.request
+import urllib.error
+import urllib.parse
 
 # ===== LOGGING CONFIGURATION =====
 logging.basicConfig(
@@ -17,7 +19,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('coding_tracker.log'),
-        logging.StreamHandler()  # Also print to console
+        logging.StreamHandler()
     ]
 )
 logger = logging.getLogger(__name__)
@@ -26,14 +28,15 @@ GITHUB_USERNAME = 'volumeee'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 README_FILE = 'README.md'
 START_DATE = "01 March 2022"
-ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Kotlin', 'Java', 'C++']
+# Added Vue, Python, Svelte, Shell, Dockerfile as requested
+ALLOWED_LANGUAGES = ['TypeScript', 'JavaScript', 'HTML', 'CSS', 'PHP', 'Kotlin', 'Java', 'C++', 'Vue', 'Python', 'Svelte', 'Shell', 'Dockerfile']
 CACHE_DIR = Path('.cache')
 CACHE_EXPIRY_DAYS = 1
 
 # ===== PARALLEL PROCESSING CONFIGURATION =====
-MAX_WORKERS = 5  # Optimal for GitHub Actions (2 vCPU)
-RATE_LIMIT_BUFFER = 100  # Stop if remaining requests < 100
-results_lock = Lock()  # Thread-safe aggregation
+MAX_WORKERS = 5
+RATE_LIMIT_BUFFER = 100
+results_lock = Lock()
 
 # ===== NEW: Cache Management =====
 def init_cache():
@@ -66,49 +69,65 @@ def save_to_cache(cache_key, data):
         }, f)
     logger.debug(f"Data cached: {cache_key}")
 
-# ===== IMPROVED: Rate Limit Handler with Better Protection =====
+# ===== IMPROVED: Rate Limit Handler using urllib =====
 def api_request_with_retry(url, headers, params=None, max_retries=3):
     cache_key = get_cache_key(url, params)
     cached_data = get_from_cache(cache_key)
     if cached_data:
         return cached_data
     
+    full_url = url
+    if params:
+        # urllib requires params to be encoded in the URL
+        query_string = urllib.parse.urlencode(params)
+        full_url = f"{url}?{query_string}"
+
+    req = urllib.request.Request(full_url, headers=headers)
+    
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, headers=headers, params=params)
-            
-            # Enhanced rate limit protection for GitHub Actions
-            remaining = int(response.headers.get('X-RateLimit-Remaining', 5000))
-            
-            if remaining < RATE_LIMIT_BUFFER:
-                reset_time = int(response.headers.get('X-RateLimit-Reset', 0))
-                wait_seconds = max(reset_time - time.time(), 0) + 10
-                logger.warning(f"⚠️  Rate limit buffer reached ({remaining} left). Sleeping {wait_seconds:.0f}s...")
-                print(f"⚠️  Rate limit buffer reached ({remaining} left). Sleeping {wait_seconds:.0f}s...")
-                time.sleep(wait_seconds)
-            
-            if response.status_code == 403 and 'rate limit' in response.text.lower():
-                wait_time = (2 ** attempt) * 60  # Exponential backoff
-                logger.warning(f"🚫 Rate limited! Waiting {wait_time}s (attempt {attempt+1}/{max_retries})")
-                print(f"🚫 Rate limited! Waiting {wait_time}s (attempt {attempt+1}/{max_retries})")
+            with urllib.request.urlopen(req) as response:
+                # Rate limit handling
+                # urllib headers are accessed via response.info() or response.headers
+                # Note: keys are case-insensitive in http.client.HTTPMessage
+                remaining = int(response.headers.get('X-RateLimit-Remaining', 5000))
+                
+                if remaining < RATE_LIMIT_BUFFER:
+                    reset_time = int(response.headers.get('X-RateLimit-Reset', 0))
+                    wait_seconds = max(reset_time - time.time(), 0) + 10
+                    msg = f"⚠️  Rate limit buffer reached ({remaining} left). Sleeping {wait_seconds:.0f}s..."
+                    logger.warning(msg)
+                    print(msg)
+                    time.sleep(wait_seconds)
+                
+                data = json.loads(response.read().decode('utf-8'))
+                save_to_cache(cache_key, data)
+                return data
+                
+        except urllib.error.HTTPError as e:
+            if e.code == 403 and 'rate limit' in e.reason.lower():
+                wait_time = (2 ** attempt) * 60
+                msg = f"🚫 Rate limited! Waiting {wait_time}s (attempt {attempt+1}/{max_retries})"
+                logger.warning(msg)
+                print(msg)
                 time.sleep(wait_time)
                 continue
+            elif attempt == max_retries - 1:
+                logger.error(f"❌ HTTP Error {e.code}: {e.reason}")
+                return []
             
-            response.raise_for_status()
-            data = response.json()
-            save_to_cache(cache_key, data)
-            return data
+            wait_time = (2 ** attempt) * 5
+            logger.warning(f"⚠️  HTTP Error {e.code}. Retrying in {wait_time}s...")
+            time.sleep(wait_time)
             
-        except requests.exceptions.RequestException as e:
+        except urllib.error.URLError as e:
             if attempt == max_retries - 1:
-                logger.error(f"❌ Failed after {max_retries} attempts: {e}")
-                print(f"❌ Failed after {max_retries} attempts: {e}")
+                logger.error(f"❌ Connection Error: {e.reason}")
                 return []
             wait_time = (2 ** attempt) * 5
-            logger.warning(f"⚠️  Error: {e}. Retrying in {wait_time}s...")
-            print(f"⚠️  Error: {e}. Retrying in {wait_time}s...")
+            logger.warning(f"⚠️  Connection Error: {e.reason}. Retrying in {wait_time}s...")
             time.sleep(wait_time)
-    
+            
     return []
 
 # ===== IMPROVED: Get Repos with Cache =====
@@ -452,7 +471,7 @@ def update_readme(language_times, start_date, end_date):
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
     duration = (end_date - start_date).days
-    new_content =  f'```typescript\nCoding Time Tracker🙆‍♂️\n\n'
+    new_content =  f'```typescript\nCoding Time Tracker🙆♂️\n\n'
     new_content += f'From: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n'
     new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
@@ -464,18 +483,26 @@ def update_readme(language_times, start_date, end_date):
     
     new_content += '```\n'
     
-    with open(README_FILE, 'r') as f:
-        readme_content = f.read()
-    
-    start_marker = '<!-- language_times_start -->'
-    end_marker = '<!-- language_times_end -->'
-    if start_marker in readme_content and end_marker in readme_content:
-        new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
-    else:
-        new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
-    
-    with open(README_FILE, 'w') as f:
-        f.write(new_readme_content)
+    # Try to write even if no START/END markers found
+    try:
+        if os.path.exists(README_FILE):
+            with open(README_FILE, 'r') as f:
+                readme_content = f.read()
+            
+            start_marker = '<!-- language_times_start -->'
+            end_marker = '<!-- language_times_end -->'
+            if start_marker in readme_content and end_marker in readme_content:
+                new_readme_content = readme_content.split(start_marker)[0] + start_marker + '\n' + new_content + end_marker + readme_content.split(end_marker)[1]
+            else:
+                new_readme_content = readme_content + '\n' + start_marker + '\n' + new_content + end_marker
+            
+            with open(README_FILE, 'w') as f:
+                f.write(new_readme_content)
+        else:
+            with open(README_FILE, 'w') as f:
+                f.write('<!-- language_times_start -->\n' + new_content + '<!-- language_times_end -->')
+    except Exception as e:
+        logger.error(f"Failed to update README: {e}")
 
 def main():
     print("=" * 60)
