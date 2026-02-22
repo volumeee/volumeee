@@ -1,17 +1,19 @@
-from collections import defaultdict
-import os
-from datetime import datetime, timedelta
-import pytz
-import time
-import json
+import base64
 import hashlib
-from pathlib import Path
+import json
 import logging
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from threading import Lock
-import urllib.request
+import os
+import time
 import urllib.error
 import urllib.parse
+import urllib.request
+from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta
+from pathlib import Path
+from threading import Lock
+
+import pytz
 
 # ===== LOGGING CONFIGURATION =====
 logging.basicConfig(
@@ -73,7 +75,9 @@ def save_to_cache(cache_key, data):
 def api_request_with_retry(url, headers, params=None, max_retries=3):
     cache_key = get_cache_key(url, params)
     cached_data = get_from_cache(cache_key)
-    if cached_data:
+    if cached_data is not None:
+        if isinstance(cached_data, dict) and cached_data.get("_not_found"):
+            return None
         return cached_data
     
     full_url = url
@@ -105,6 +109,9 @@ def api_request_with_retry(url, headers, params=None, max_retries=3):
                 return data
                 
         except urllib.error.HTTPError as e:
+            if e.code == 404:
+                save_to_cache(cache_key, {"_not_found": True})
+                return None
             if e.code == 403 and 'rate limit' in e.reason.lower():
                 wait_time = (2 ** attempt) * 60
                 msg = f"🚫 Rate limited! Waiting {wait_time}s (attempt {attempt+1}/{max_retries})"
@@ -289,7 +296,244 @@ def get_repo_languages(repo_name):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/languages'
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
     languages = api_request_with_retry(url, headers)
+    if not isinstance(languages, dict):
+        return {}
     return {lang: bytes for lang, bytes in languages.items() if lang in ALLOWED_LANGUAGES}
+
+# ===== NEW: Parse Frameworks from Config Files =====
+def get_repo_frameworks(repo_name):
+    headers = {'Authorization': f'token {GITHUB_TOKEN}', 'Accept': 'application/vnd.github.v3+json'}
+    frameworks = set()
+    
+    # 1. Check Node.js (package.json)
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/package.json'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8')
+            pkg = json.loads(content)
+            deps = {**pkg.get('dependencies', {}), **pkg.get('devDependencies', {})}
+            
+            # JavaScript/TypeScript frameworks & libraries
+            if 'react' in deps:
+                frameworks.add('React')
+            
+            # Desktop & Mobile (JS/TS)
+            if 'react-native' in deps or 'expo' in deps:
+                frameworks.add('React Native')
+            if 'electron' in deps:
+                frameworks.add('Electron')
+            if '@capacitor/core' in deps or '@capacitor/cli' in deps:
+                frameworks.add('Capacitor')
+            if '@ionic/core' in deps or '@ionic/vue' in deps or '@ionic/react' in deps or '@ionic/angular' in deps:
+                frameworks.add('Ionic')
+            if 'cordova' in deps:
+                frameworks.add('Cordova')
+            if 'next' in deps:
+                frameworks.add('Next.js')
+            if 'nuxt' in deps:
+                frameworks.add('Nuxt.js')
+            if 'vue' in deps:
+                frameworks.add('Vue.js')
+            if 'svelte' in deps:
+                frameworks.add('Svelte')
+            if '@angular/core' in deps:
+                frameworks.add('Angular')
+            if 'express' in deps:
+                frameworks.add('Express.js')
+            if '@nestjs/core' in deps:
+                frameworks.add('NestJS')
+            if 'fastify' in deps:
+                frameworks.add('Fastify')
+            if 'koa' in deps:
+                frameworks.add('Koa')
+            if 'meteor' in deps:
+                frameworks.add('Meteor')
+            if 'jquery' in deps:
+                frameworks.add('jQuery')
+            
+            # CSS Frameworks / Styling
+            if 'tailwindcss' in deps:
+                frameworks.add('Tailwind CSS')
+            if 'bootstrap' in deps:
+                frameworks.add('Bootstrap')
+            if 'bulma' in deps:
+                frameworks.add('Bulma')
+            if 'sass' in deps or 'node-sass' in deps:
+                frameworks.add('Sass')
+            
+            # State Management
+            if 'redux' in deps or '@reduxjs/toolkit' in deps:
+                frameworks.add('Redux')
+            if 'pinia' in deps:
+                frameworks.add('Pinia')
+            if 'vuex' in deps:
+                frameworks.add('Vuex')
+            if 'mobx' in deps:
+                frameworks.add('MobX')
+            
+            # Build Tools / Bundlers
+            if 'webpack' in deps:
+                frameworks.add('Webpack')
+            if 'vite' in deps:
+                frameworks.add('Vite')
+            if 'rollup' in deps:
+                frameworks.add('Rollup')
+            if 'parcel' in deps:
+                frameworks.add('Parcel')
+            
+            # Testing
+            if 'jest' in deps:
+                frameworks.add('Jest')
+            if 'cypress' in deps:
+                frameworks.add('Cypress')
+            if 'mocha' in deps:
+                frameworks.add('Mocha')
+            if 'vitest' in deps:
+                frameworks.add('Vitest')
+            
+            # Database / ORM
+            if 'prisma' in deps or '@prisma/client' in deps:
+                frameworks.add('Prisma')
+            if 'mongoose' in deps:
+                frameworks.add('Mongoose')
+            if 'typeorm' in deps:
+                frameworks.add('TypeORM')
+            if 'sequelize' in deps:
+                frameworks.add('Sequelize')
+        except Exception:
+            pass
+            
+    # 2. Check Python (requirements.txt)
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/requirements.txt'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8').lower()
+            
+            # Web Frameworks
+            if 'django' in content:
+                frameworks.add('Django')
+            if 'fastapi' in content:
+                frameworks.add('FastAPI')
+            if 'flask' in content:
+                frameworks.add('Flask')
+            if 'tornado' in content:
+                frameworks.add('Tornado')
+            
+            # Data Science / ML
+            if 'pandas' in content:
+                frameworks.add('Pandas')
+            if 'numpy' in content:
+                frameworks.add('NumPy')
+            if 'scikit-learn' in content:
+                frameworks.add('Scikit-learn')
+            if 'tensorflow' in content:
+                frameworks.add('TensorFlow')
+            if 'torch' in content or 'pytorch' in content:
+                frameworks.add('PyTorch')
+            if 'keras' in content:
+                frameworks.add('Keras')
+            if 'matplotlib' in content:
+                frameworks.add('Matplotlib')
+            if 'seaborn' in content:
+                frameworks.add('Seaborn')
+            if 'streamlit' in content:
+                frameworks.add('Streamlit')
+            if 'jupyter' in content or 'notebook' in content:
+                frameworks.add('Jupyter')
+            
+            # Testing
+            if 'pytest' in content:
+                frameworks.add('Pytest')
+            
+            # ORM / DB
+            if 'sqlalchemy' in content:
+                frameworks.add('SQLAlchemy')
+            if 'alembic' in content:
+                frameworks.add('Alembic')
+            if 'psycopg2' in content:
+                frameworks.add('PostgreSQL (psycopg2)')
+        except Exception:
+            pass
+            
+    # 3. Check PHP (composer.json)
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/composer.json'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8')
+            js = json.loads(content)
+            deps = {**js.get('require', {}), **js.get('require-dev', {})}
+            
+            # PHP Frameworks
+            if 'laravel/framework' in deps:
+                frameworks.add('Laravel')
+            if 'symfony/symfony' in deps:
+                frameworks.add('Symfony')
+            if 'codeigniter4/framework' in deps:
+                frameworks.add('CodeIgniter')
+            if 'yiisoft/yii2' in deps:
+                frameworks.add('Yii')
+            if 'cakephp/cakephp' in deps:
+                frameworks.add('CakePHP')
+            
+            # Testing & Tools
+            if 'phpunit/phpunit' in deps:
+                frameworks.add('PHPUnit')
+            if 'pestphp/pest' in deps:
+                frameworks.add('Pest')
+            if 'livewire/livewire' in deps:
+                frameworks.add('Livewire')
+            
+        except Exception:
+            pass
+
+    # 4. Check Go (go.mod)
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/go.mod'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8')
+            if 'github.com/gin-gonic/gin' in content:
+                frameworks.add('Gin')
+            if 'github.com/gofiber/fiber' in content:
+                frameworks.add('Fiber')
+            if 'github.com/labstack/echo' in content:
+                frameworks.add('Echo')
+            if 'gorm.io/gorm' in content:
+                frameworks.add('GORM')
+        except Exception:
+            pass
+            
+    # 5. Check Java/Kotlin (pom.xml or build.gradle)
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/pom.xml'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8').lower()
+            if 'spring-boot' in content:
+                frameworks.add('Spring Boot')
+            if 'hibernate' in content:
+                frameworks.add('Hibernate')
+            if 'junit' in content:
+                frameworks.add('JUnit')
+        except Exception:
+            pass
+            
+    url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/build.gradle'
+    data = api_request_with_retry(url, headers)
+    if data and isinstance(data, dict) and 'content' in data:
+        try:
+            content = base64.b64decode(data['content']).decode('utf-8').lower()
+            if 'spring-boot' in content:
+                frameworks.add('Spring Boot')
+            if 'com.android.application' in content or 'com.android.library' in content:
+                frameworks.add('Android SDK')
+        except Exception:
+            pass
+
+    return list(frameworks)
 
 # ===== NEW: Process Single Repository (Worker Function) =====
 def process_repository(repo, current_date, chunk_end, repo_idx, total_repos):
@@ -301,6 +545,7 @@ def process_repository(repo, current_date, chunk_end, repo_idx, total_repos):
     result = {
         'repo_name': repo_name,
         'language_times': defaultdict(float),
+        'framework_times': defaultdict(float),
         'commit_count': 0,
         'total_time': 0,
         'status': 'success'
@@ -323,6 +568,9 @@ def process_repository(repo, current_date, chunk_end, repo_idx, total_repos):
             result['status'] = 'no_tracked_languages'
             logger.debug(f"{repo_name}: No tracked languages")
             return result
+        
+        # Get repository frameworks
+        frameworks = get_repo_frameworks(repo_name)
         
         # Filter valid commits
         valid_commits = [c for c in commits if is_valid_commit(c)]
@@ -352,6 +600,10 @@ def process_repository(repo, current_date, chunk_end, repo_idx, total_repos):
             total_bytes = sum(languages.values())
             for language, bytes_count in languages.items():
                 result['language_times'][language] = total_time * (bytes_count / total_bytes)
+                
+            # Log full time for each framework used in the repository
+            for fw in frameworks:
+                result['framework_times'][fw] = total_time
             
             logger.info(f"✅ {repo_name}: {len(valid_commits)} commits → {total_time:.1f}h")
         
@@ -372,6 +624,7 @@ def calculate_time_spent(start_date, end_date):
     current_date = start_date
     chunk_size = timedelta(days=30)
     language_times = defaultdict(float)
+    framework_times = defaultdict(float)
     
     repos = get_repos(GITHUB_USERNAME)
     total_chunks = ((end_date - start_date).days // chunk_size.days) + 1
@@ -392,6 +645,7 @@ def calculate_time_spent(start_date, end_date):
         
         # ===== PARALLEL EXECUTION =====
         chunk_language_times = defaultdict(float)
+        chunk_framework_times = defaultdict(float)
         completed = 0
         total_repos = len(repos)
         
@@ -419,8 +673,10 @@ def calculate_time_spent(start_date, end_date):
                     
                     # Thread-safe aggregation
                     with results_lock:
-                        for language, time in result['language_times'].items():
-                            chunk_language_times[language] += time
+                        for language, time_val in result['language_times'].items():
+                            chunk_language_times[language] += time_val
+                        for fw, time_val in result['framework_times'].items():
+                            chunk_framework_times[fw] += time_val
                     
                     # Progress indicator
                     if completed % 5 == 0 or completed == total_repos:
@@ -432,8 +688,11 @@ def calculate_time_spent(start_date, end_date):
                     logger.error(f"❌ Failed to process {repo['name']}: {e}")
         
         # Aggregate chunk results to total
-        for language, time in chunk_language_times.items():
-            language_times[language] += time
+        for language, time_val in chunk_language_times.items():
+            language_times[language] += time_val
+            
+        for fw, time_val in chunk_framework_times.items():
+            framework_times[fw] += time_val
         
         chunk_total = sum(chunk_language_times.values())
         print(f"✅ Chunk {chunk_count} completed: {chunk_total:.1f} hours")
@@ -443,12 +702,13 @@ def calculate_time_spent(start_date, end_date):
     
     total_hours = sum(language_times.values())
     logger.info(f"\n{'='*60}")
-    logger.info(f"📈 FINAL RESULTS:")
+    logger.info("📈 FINAL RESULTS:")
     logger.info(f"Total coding time: {total_hours:.2f} hours")
     logger.info(f"Languages tracked: {len(language_times)}")
+    logger.info(f"Frameworks tracked: {len(framework_times)}")
     logger.info(f"{'='*60}")
     
-    return language_times
+    return language_times, framework_times
 
 # ===== Keep existing functions: format_time, calculate_percentages, create_text_graph, update_readme =====
 def format_time(hours):
@@ -456,30 +716,45 @@ def format_time(hours):
     m = int((hours - h) * 60)
     return f'{h} hrs {m} mins'
 
-def calculate_percentages(language_times, total_time):
-    return {lang: (time / total_time) * 100 if total_time > 0 else 0 
-            for lang, time in language_times.items()}
+def calculate_percentages(times_dict, global_total):
+    return {item: (time_val / global_total) * 100 if global_total > 0 else 0 
+            for item, time_val in times_dict.items()}
 
 def create_text_graph(percent):
     bar_length = 20
     filled_length = int(bar_length * percent // 100)
     return '█' * filled_length + '░' * (bar_length - filled_length)
 
-def update_readme(language_times, start_date, end_date):
+def update_readme(language_times, framework_times, start_date, end_date):
     total_time = sum(language_times.values())
-    percentages = calculate_percentages(language_times, total_time)
+    
+    # Process languages
+    lang_percentages = calculate_percentages(language_times, total_time)
     sorted_languages = sorted(language_times.items(), key=lambda x: x[1], reverse=True)
     
+    # Process frameworks (using overall total_time for percentages to represent "what % of my total time involved this framework")
+    fw_percentages = calculate_percentages(framework_times, total_time)
+    sorted_frameworks = sorted(framework_times.items(), key=lambda x: x[1], reverse=True)
+    
     duration = (end_date - start_date).days
-    new_content =  f'```typescript\nCoding Time Tracker🙆♂️\n\n'
+    new_content =  '```typescript\nCoding Time Tracker🙆♂️\n\n'
     new_content += f'From: {start_date.strftime("%d %B %Y")} - To: {end_date.strftime("%d %B %Y")}\n'
     new_content += f'Total Time: {format_time(total_time)}  ({duration} days)\n\n'
     
-    for language, time in sorted_languages:
-        formatted_time = format_time(time)
-        percent = percentages[language]
+    new_content += '💻 Languages:\n'
+    for language, time_val in sorted_languages:
+        formatted_time = format_time(time_val)
+        percent = min(100.0, lang_percentages[language])
         graph = create_text_graph(percent)
-        new_content += f'{language:<25} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
+        new_content += f'{language:<20} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
+        
+    if sorted_frameworks:
+        new_content += '\n⚡ Frameworks & Tools:\n'
+        for fw, time_val in sorted_frameworks:
+            formatted_time = format_time(time_val)
+            percent = min(100.0, fw_percentages[fw])
+            graph = create_text_graph(percent)
+            new_content += f'{fw:<20} {formatted_time:<15} {graph} {percent:>6.2f} %\n'
     
     new_content += '```\n'
     
@@ -515,7 +790,7 @@ def main():
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
     end_date = datetime.now(pytz.UTC)
     
-    print(f"\n📊 Configuration:")
+    print("\n📊 Configuration:")
     print(f"   User: {GITHUB_USERNAME}")
     print(f"   Period: {START_DATE} to {end_date.strftime('%d %B %Y')}")
     print(f"   Languages: {', '.join(ALLOWED_LANGUAGES)}")
@@ -531,20 +806,21 @@ def main():
     start_time = time.time()
     
     # Main processing
-    language_times = calculate_time_spent(start_date, end_date)
+    language_times, framework_times = calculate_time_spent(start_date, end_date)
     
     # Calculate execution time
     execution_time = time.time() - start_time
     
     total_hours = sum(language_times.values())
-    logger.info(f"\n📈 Results Summary:")
+    logger.info("\n📈 Results Summary:")
     logger.info(f"Total coding time: {total_hours:.2f} hours")
     logger.info(f"Languages tracked: {len(language_times)}")
+    logger.info(f"Frameworks tracked: {len(framework_times)}")
     logger.info(f"Execution time: {execution_time:.1f} seconds")
     
     print("\n" + "=" * 60)
     print("📝 Updating README.md...")
-    update_readme(language_times, start_date, end_date)
+    update_readme(language_times, framework_times, start_date, end_date)
     logger.info("README.md updated successfully")
     
     print("=" * 60)
