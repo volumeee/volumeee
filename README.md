@@ -28,18 +28,27 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 Coding Time Tracker🙆♂️
 
 From: 01 March 2022 - To: 22 February 2026
-Total Time: 177 hrs 19 mins  (1454 days)
+Total Time: 181 hrs 24 mins  (1454 days)
 
-TypeScript                57 hrs 37 mins  ██████░░░░░░░░░░░░░░  32.50 %
-JavaScript                40 hrs 3 mins   ████░░░░░░░░░░░░░░░░  22.59 %
-C++                       34 hrs 20 mins  ███░░░░░░░░░░░░░░░░░  19.37 %
-Python                    29 hrs 40 mins  ███░░░░░░░░░░░░░░░░░  16.73 %
-HTML                      7 hrs 8 mins    ░░░░░░░░░░░░░░░░░░░░   4.02 %
-CSS                       4 hrs 5 mins    ░░░░░░░░░░░░░░░░░░░░   2.31 %
-Java                      3 hrs 35 mins   ░░░░░░░░░░░░░░░░░░░░   2.02 %
-PHP                       0 hrs 34 mins   ░░░░░░░░░░░░░░░░░░░░   0.32 %
-Dockerfile                0 hrs 10 mins   ░░░░░░░░░░░░░░░░░░░░   0.10 %
-Kotlin                    0 hrs 2 mins    ░░░░░░░░░░░░░░░░░░░░   0.03 %
+💻 Languages:
+TypeScript           57 hrs 37 mins  ██████░░░░░░░░░░░░░░  31.77 %
+JavaScript           41 hrs 46 mins  ████░░░░░░░░░░░░░░░░  23.03 %
+C++                  34 hrs 20 mins  ███░░░░░░░░░░░░░░░░░  18.93 %
+Python               30 hrs 56 mins  ███░░░░░░░░░░░░░░░░░  17.06 %
+HTML                 8 hrs 11 mins   ░░░░░░░░░░░░░░░░░░░░   4.51 %
+CSS                  4 hrs 5 mins    ░░░░░░░░░░░░░░░░░░░░   2.26 %
+Java                 3 hrs 35 mins   ░░░░░░░░░░░░░░░░░░░░   1.98 %
+PHP                  0 hrs 34 mins   ░░░░░░░░░░░░░░░░░░░░   0.32 %
+Dockerfile           0 hrs 13 mins   ░░░░░░░░░░░░░░░░░░░░   0.12 %
+Kotlin               0 hrs 2 mins    ░░░░░░░░░░░░░░░░░░░░   0.02 %
+
+⚡ Frameworks & Tools:
+Express.js           29 hrs 1 mins   ███░░░░░░░░░░░░░░░░░  16.00 %
+React                26 hrs 6 mins   ██░░░░░░░░░░░░░░░░░░  14.39 %
+Tailwind CSS         18 hrs 34 mins  ██░░░░░░░░░░░░░░░░░░  10.24 %
+React Native         17 hrs 2 mins   █░░░░░░░░░░░░░░░░░░░   9.39 %
+Vite                 9 hrs 3 mins    ░░░░░░░░░░░░░░░░░░░░   5.00 %
+Jest                 3 hrs 24 mins   ░░░░░░░░░░░░░░░░░░░░   1.88 %
 ```
 <!-- language_times_end -->
 ##
