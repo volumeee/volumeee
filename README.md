@@ -12,6 +12,8 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 
 #### Learn more at [bagus-erwanto.vercel.app](https://bagus-erwanto.vercel.app/about)
 
+<a class="libutton" href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=bagus-erwanto" target="_blank">Follow on LinkedIn</a>
+
 
 ## 🛠 &nbsp;Technologies & Tools
 
