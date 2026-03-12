@@ -394,11 +394,18 @@ def format_time(hours):
     m = int((hours % 1) * 60)
     return f"{h} hrs {m} mins" if h > 0 or m > 0 else "0 mins"
 
-def create_text_graph(percent):
-    # Increased bar length for a much more substantial and "fuller" look
-    length = 50 
-    filled = int(length * percent / 100)
-    # Ensure at least 1 block if percent > 0 to avoid empty bars for small values
+def create_text_graph(percent, max_percent):
+    # Use relative scaling: the largest item fills the bar, making it look "fuller"
+    length = 25 
+    if max_percent > 0:
+        # Scale the percent relative to the maximum percentage found in the list
+        relative_percent = (percent / max_percent) * 100
+    else:
+        relative_percent = 0
+        
+    filled = int(length * relative_percent / 100)
+    
+    # Ensure at least 1 block if percent > 0
     if percent > 0 and filled == 0:
         filled = 1
     return '█' * filled + '░' * (length - filled)
@@ -408,18 +415,22 @@ def update_readme(lang_times, fw_times, start, end):
     sorted_langs = sorted(lang_times.items(), key=lambda x: x[1], reverse=True)
     sorted_fws = sorted(fw_times.items(), key=lambda x: x[1], reverse=True)
     
+    # Calculate max percentages for relative scaling
+    max_lang_p = (sorted_langs[0][1] / total * 100) if sorted_langs and total > 0 else 0
+    max_fw_p = (sorted_fws[0][1] / total * 100) if sorted_fws and total > 0 else 0
+    
     content = '```typescript\nCoding Time Tracker🙆‍♂️\n\n'
     content += f'Period: {start.strftime("%d %b %Y")} - {end.strftime("%d %b %Y")}\n'
     content += f'Total Time: {format_time(total)}\n\n💻 Languages:\n'
     for lang, time_val in sorted_langs:
         p = (time_val / total * 100) if total > 0 else 0
-        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p)} {p:>6.2f} %\n'
+        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p, max_lang_p)} {p:>6.2f} %\n'
     
     if sorted_fws:
         content += '\n⚡ Frameworks:\n'
         for framework, time_val in sorted_fws:
             p = (time_val / total * 100) if total > 0 else 0
-            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p)} {p:>6.2f} %\n'
+            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p, max_fw_p)} {p:>6.2f} %\n'
     content += '```\n'
 
     marker_s, marker_e = '<!-- language_times_start -->', '<!-- language_times_end -->'
