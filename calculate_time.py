@@ -419,25 +419,24 @@ def update_readme(lang_times, fw_times, start, end):
     years = max(1, (end - start).days / 365.25)
     milestone = years * 250 
     
-    # Still need max values for relative bar scaling
+    # Unified scaling: Use the single highest value across EVERYTHING as the anchor
     max_lang_h = sorted_langs[0][1] if sorted_langs else 0
     max_fw_h = sorted_fws[0][1] if sorted_fws else 0
+    global_max_h = max(max_lang_h, max_fw_h)
     
     content = '```typescript\nCoding Time Tracker🙆‍♂️\n\n'
     content += f'Period: {start.strftime("%d %b %Y")} - {end.strftime("%d %b %Y")}\n'
     content += f'Total Time: {format_time(total_time)}\n\n💻 Languages (Mastery Level):\n'
     for lang, time_val in sorted_langs:
-        # Percentage relative to Mastery Milestone (can exceed 100%)
+        # Mastery is relative to milestone, but bar is relative to global max
         p_mastery = (time_val / milestone * 100) if milestone > 0 else 0
-        p_relative = (time_val / max_lang_h * 100) if max_lang_h > 0 else 0
-        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p_relative, 100)} {p_mastery:>6.2f} %\n'
+        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(time_val, global_max_h)} {p_mastery:>6.2f} %\n'
     
     if sorted_fws:
         content += '\n⚡ Frameworks (Mastery Level):\n'
         for framework, time_val in sorted_fws:
             p_mastery = (time_val / milestone * 100) if milestone > 0 else 0
-            p_relative = (time_val / max_fw_h * 100) if max_fw_h > 0 else 0
-            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p_relative, 100)} {p_mastery:>6.2f} %\n'
+            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(time_val, global_max_h)} {p_mastery:>6.2f} %\n'
     content += '```\n'
 
     marker_s, marker_e = '<!-- language_times_start -->', '<!-- language_times_end -->'
