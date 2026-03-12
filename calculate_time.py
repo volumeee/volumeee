@@ -304,34 +304,32 @@ def get_commit_time_difference(commits):
     if len(times) < 2:
         return 0
     
-    total, gap = 0, timedelta(hours=4) 
+    total, gap = 0, timedelta(hours=6) 
     for i in range(len(times)-1):
         diff = times[i+1] - times[i]
-        total += diff.total_seconds() if diff < gap else 5400 
-    return (total + 5400) / 3600 
+        # Multiplier: Each gap now counts as a 3-hour deep thinking session
+        total += diff.total_seconds() if diff < gap else 10800 
+    return (total + 10800) / 3600 
 
 def calculate_commit_weight(stats, message):
     changes = stats.get('additions', 0) + stats.get('deletions', 0)
     m = 1.0
     msg = message.lower()
-    # Harder tasks get higher multiplier
-    if any(w in msg for w in ['fix', 'bug', 'solve', 'feat']):
-        m = 1.5 
-    elif any(w in msg for w in ['refactor', 'impl']):
-        m = 1.3
-    elif any(w in msg for w in ['docs', 'typo', 'style']):
-        m = 0.6
+    if any(w in msg for w in ['fix', 'bug', 'solve', 'feat', 'feature']):
+        m = 1.8 # High complexity logic
+    elif any(w in msg for w in ['refactor', 'impl', 'build']):
+        m = 1.4
     
-    # Aggressive Scaling
+    # Ultra-Aggressive Scaling for "High Impact" visualization
     if changes < 10:
-        return 1.0 * m
+        return 2.5 * m   # Minimal 2.5h for even the smallest precise change
     if changes < 50:
-        return 2.0 * m
+        return 5.0 * m   # Half day of work
     if changes < 200:
-        return 4.5 * m
-    if changes < 500:
-        return 8.0 * m
-    return min(12.0, (changes / 40) * m)
+        return 12.0 * m  # Full day of intense focus
+    if changes < 800:
+        return 20.0 * m  # Massive task
+    return min(48.0, (changes / 15) * m) # Large architectural changes
 
 # ===== MAIN WORKER =====
 def process_repository(repo, current_date, chunk_end, idx, total):
@@ -391,21 +389,14 @@ def calculate_time_spent(start_date, end_date):
 
 # ===== UI & EXPORT =====
 def format_time(hours):
-    """Formats decimal hours into 'D days H hrs M mins'"""
-    d = int(hours // 24)
-    h = int(hours % 24)
+    """Formats decimal hours into 'H hrs M mins'"""
+    h = int(hours)
     m = int((hours % 1) * 60)
-    
-    parts = []
-    if d > 0:
-        parts.append(f"{d} {'days' if d > 1 else 'day'}")
-    if h > 0 or d > 0:
-        parts.append(f"{h} hrs")
-    parts.append(f"{m} mins")
-    return " ".join(parts) if parts else "0 mins"
+    return f"{h} hrs {m} mins" if h > 0 or m > 0 else "0 mins"
 
 def create_text_graph(percent):
-    length = 20
+    # Increased bar length for "fuller" look
+    length = 25 
     filled = int(length * percent / 100)
     return '█' * filled + '░' * (length - filled)
 
