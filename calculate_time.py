@@ -411,26 +411,33 @@ def create_text_graph(percent, max_percent):
     return '█' * filled + '░' * (length - filled)
 
 def update_readme(lang_times, fw_times, start, end):
-    total = sum(lang_times.values())
+    total_time = sum(lang_times.values())
     sorted_langs = sorted(lang_times.items(), key=lambda x: x[1], reverse=True)
     sorted_fws = sorted(fw_times.items(), key=lambda x: x[1], reverse=True)
     
-    # Calculate max percentages for relative scaling
-    max_lang_p = (sorted_langs[0][1] / total * 100) if sorted_langs and total > 0 else 0
-    max_fw_p = (sorted_fws[0][1] / total * 100) if sorted_fws and total > 0 else 0
+    # Calculate Mastery Milestone: 250 hours per year is considered "Expert Level"
+    years = max(1, (end - start).days / 365.25)
+    milestone = years * 250 
+    
+    # Still need max values for relative bar scaling
+    max_lang_h = sorted_langs[0][1] if sorted_langs else 0
+    max_fw_h = sorted_fws[0][1] if sorted_fws else 0
     
     content = '```typescript\nCoding Time Tracker🙆‍♂️\n\n'
     content += f'Period: {start.strftime("%d %b %Y")} - {end.strftime("%d %b %Y")}\n'
-    content += f'Total Time: {format_time(total)}\n\n💻 Languages:\n'
+    content += f'Total Time: {format_time(total_time)}\n\n💻 Languages (Mastery Level):\n'
     for lang, time_val in sorted_langs:
-        p = (time_val / total * 100) if total > 0 else 0
-        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p, max_lang_p)} {p:>6.2f} %\n'
+        # Percentage relative to Mastery Milestone (can exceed 100%)
+        p_mastery = (time_val / milestone * 100) if milestone > 0 else 0
+        p_relative = (time_val / max_lang_h * 100) if max_lang_h > 0 else 0
+        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p_relative, 100)} {p_mastery:>6.2f} %\n'
     
     if sorted_fws:
-        content += '\n⚡ Frameworks:\n'
+        content += '\n⚡ Frameworks (Mastery Level):\n'
         for framework, time_val in sorted_fws:
-            p = (time_val / total * 100) if total > 0 else 0
-            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p, max_fw_p)} {p:>6.2f} %\n'
+            p_mastery = (time_val / milestone * 100) if milestone > 0 else 0
+            p_relative = (time_val / max_fw_h * 100) if max_fw_h > 0 else 0
+            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p_relative, 100)} {p_mastery:>6.2f} %\n'
     content += '```\n'
 
     marker_s, marker_e = '<!-- language_times_start -->', '<!-- language_times_end -->'
