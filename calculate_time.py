@@ -395,9 +395,12 @@ def format_time(hours):
     return f"{h} hrs {m} mins" if h > 0 or m > 0 else "0 mins"
 
 def create_text_graph(percent):
-    # Increased bar length for "fuller" look
-    length = 25 
+    # Increased bar length for a much more substantial and "fuller" look
+    length = 50 
     filled = int(length * percent / 100)
+    # Ensure at least 1 block if percent > 0 to avoid empty bars for small values
+    if percent > 0 and filled == 0:
+        filled = 1
     return '█' * filled + '░' * (length - filled)
 
 def update_readme(lang_times, fw_times, start, end):
