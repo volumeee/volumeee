@@ -47,7 +47,6 @@ ALLOWED_LANGUAGES = [
 ]
 
 # Framework detection rules mapping
-# Structure: { StackName: { files: [], dependencies: { Label: [pkgs] }, keywords: { Label: [strings] } } }
 FRAMEWORK_RULES = {
     "Node.js": {
         "files": ['package.json', 'frontend/package.json', 'client/package.json', 'web/package.json', 'app/package.json'],
@@ -166,7 +165,9 @@ def api_request_with_retry(url, headers, params=None, max_retries=3):
     cache_key = get_cache_key(url, params)
     cached_data = get_from_cache(cache_key)
     if cached_data is not None:
-        return None if isinstance(cached_data, dict) and cached_data.get("_not_found") else cached_data
+        if isinstance(cached_data, dict) and cached_data.get("_not_found"):
+            return None
+        return cached_data
     
     full_url = f"{url}?{urllib.parse.urlencode(params)}" if params else url
     req = urllib.request.Request(full_url, headers=headers)
@@ -192,7 +193,8 @@ def api_request_with_retry(url, headers, params=None, max_retries=3):
                 time.sleep((2 ** attempt) * 30)
                 continue
             time.sleep((2 ** attempt) * 2)
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Request error: {e}")
             time.sleep((2 ** attempt) * 2)
     return []
 
@@ -204,7 +206,8 @@ def get_repos(username):
     page = 1
     while True:
         data = api_request_with_retry(url, headers, {'page': page, 'per_page': 100})
-        if not data: break
+        if not data:
+            break
         repos.extend(data)
         page += 1
     return repos
@@ -221,9 +224,11 @@ def get_commits(repo_name, since_date, until_date):
             'page': page, 'per_page': 100
         }
         commits = api_request_with_retry(url, headers, params)
-        if not commits or not isinstance(commits, list): break
+        if not commits or not isinstance(commits, list):
+            break
         all_commits.extend(commits)
-        if len(commits) < 100: break
+        if len(commits) < 100:
+            break
         page += 1
     return all_commits
 
@@ -231,18 +236,22 @@ def get_repo_languages(repo_name):
     url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/languages'
     headers = {'Authorization': f'token {GITHUB_TOKEN}'}
     languages = api_request_with_retry(url, headers)
-    if not isinstance(languages, dict): return {}
+    if not isinstance(languages, dict):
+        return {}
     return {lang: b for lang, b in languages.items() if lang in ALLOWED_LANGUAGES}
 
 # ===== FRAMEWORK DETECTION =====
 def get_repo_frameworks(repo_name: str, languages: Optional[Dict[str, Any]] = None) -> List[str]:
-    if languages is None: languages = {}
+    if languages is None:
+        languages = {}
     headers = {'Authorization': f'token {GITHUB_TOKEN}', 'Accept': 'application/vnd.github.v3+json'}
     frameworks = set()
     
     # Fast inference
-    if 'Vue' in languages: frameworks.add('Vue.js')
-    if 'Svelte' in languages: frameworks.add('Svelte')
+    if 'Vue' in languages:
+        frameworks.add('Vue.js')
+    if 'Svelte' in languages:
+        frameworks.add('Svelte')
 
     def fetch_content(path):
         url = f'https://api.github.com/repos/{GITHUB_USERNAME}/{repo_name}/contents/{path}'
@@ -254,23 +263,29 @@ def get_repo_frameworks(repo_name: str, languages: Optional[Dict[str, Any]] = No
     for stack, rules in FRAMEWORK_RULES.items():
         for file_path in rules.get("files", []):
             content = fetch_content(file_path)
-            if not content: continue
+            if not content:
+                continue
             
             if file_path.endswith('.json'):
                 try:
                     data = json.loads(content)
                     deps = {}
-                    if stack == "Node.js": deps = {**data.get('dependencies', {}), **data.get('devDependencies', {})}
-                    elif stack == "PHP": deps = {**data.get('require', {}), **data.get('require-dev', {})}
+                    if stack == "Node.js":
+                        deps = {**data.get('dependencies', {}), **data.get('devDependencies', {})}
+                    elif stack == "PHP":
+                        deps = {**data.get('require', {}), **data.get('require-dev', {})}
                     
                     for label, pkgs in rules.get('dependencies', {}).items():
-                        if any(p in deps for p in pkgs): frameworks.add(label)
-                except: pass
+                        if any(p in deps for p in pkgs):
+                            frameworks.add(label)
+                except Exception:
+                    pass
             else:
                 lower_content = content.lower()
                 for label, strings in rules.get('keywords', {}).items():
-                    if any(s.lower() in lower_content for s in strings): frameworks.add(label)
-            break # Stop after finding primary config for stack
+                    if any(s.lower() in lower_content for s in strings):
+                        frameworks.add(label)
+            break 
             
     return sorted(list(frameworks))
 
@@ -281,26 +296,42 @@ def is_valid_commit(commit):
     return not any(p in message for p in invalids)
 
 def get_commit_time_difference(commits):
-    if len(commits) < 2: return 0
+    if len(commits) < 2:
+        return 0
+    # Sort and filter working hours (including night coding)
     times = sorted([datetime.strptime(c['commit']['author']['date'], '%Y-%m-%dT%H:%M:%SZ').replace(tzinfo=pytz.UTC) for c in commits])
-    times = [t for t in times if (6 <= t.hour or t.hour <= 2)] # Working hrs
-    if len(times) < 2: return 0
+    times = [t for t in times if (6 <= t.hour or t.hour <= 3)] 
+    if len(times) < 2:
+        return 0
     
-    total, gap = 0, timedelta(hours=2)
+    total, gap = 0, timedelta(hours=4) 
     for i in range(len(times)-1):
         diff = times[i+1] - times[i]
-        total += diff.total_seconds() if diff < gap else 1800 # Either gap or 30m base
-    return (total + 1800) / 3600
+        total += diff.total_seconds() if diff < gap else 5400 
+    return (total + 5400) / 3600 
 
 def calculate_commit_weight(stats, message):
     changes = stats.get('additions', 0) + stats.get('deletions', 0)
     m = 1.0
-    if any(w in message.lower() for w in ['fix', 'bug']): m = 1.3
-    elif any(w in message.lower() for w in ['docs', 'typo']): m = 0.5
+    msg = message.lower()
+    # Harder tasks get higher multiplier
+    if any(w in msg for w in ['fix', 'bug', 'solve', 'feat']):
+        m = 1.5 
+    elif any(w in msg for w in ['refactor', 'impl']):
+        m = 1.3
+    elif any(w in msg for w in ['docs', 'typo', 'style']):
+        m = 0.6
     
-    if changes < 20: return 0.25 * m
-    if changes < 150: return 1.0 * m
-    return min(2.5, (changes / 200) * m)
+    # Aggressive Scaling
+    if changes < 10:
+        return 1.0 * m
+    if changes < 50:
+        return 2.0 * m
+    if changes < 200:
+        return 4.5 * m
+    if changes < 500:
+        return 8.0 * m
+    return min(12.0, (changes / 40) * m)
 
 # ===== MAIN WORKER =====
 def process_repository(repo, current_date, chunk_end, idx, total):
@@ -308,25 +339,31 @@ def process_repository(repo, current_date, chunk_end, idx, total):
     res = {'language_times': defaultdict(float), 'framework_times': defaultdict(float), 'total_time': 0}
     try:
         commits = get_commits(name, current_date, chunk_end)
-        if not commits: return res
+        if not commits:
+            return res
         
         langs = get_repo_languages(name)
-        if not langs: return res
+        if not langs:
+            return res
         
         fws = get_repo_frameworks(name, languages=langs)
         valid = [c for c in commits if is_valid_commit(c)]
-        if not valid: return res
+        if not valid:
+            return res
         
         ts_time = get_commit_time_difference(valid)
         wt_time = sum(calculate_commit_weight(api_request_with_retry(c['url'], {'Authorization': f'token {GITHUB_TOKEN}'}).get('stats', {}), c['commit']['message']) for c in valid)
         
-        total_time = (ts_time * 0.6) + (wt_time * 0.4)
+        # New Ratio: 75% Weight-based (Code Volume), 25% Timestamp-based
+        total_time = (wt_time * 0.75) + (ts_time * 0.25)
         res['total_time'] = total_time
         
         if total_time > 0:
             total_b = sum(langs.values())
-            for l, b in langs.items(): res['language_times'][l] = total_time * (b / total_b)
-            for f in fws: res['framework_times'][f] = total_time
+            for language, bytes_val in langs.items():
+                res['language_times'][language] = total_time * (bytes_val / total_b)
+            for framework in fws:
+                res['framework_times'][framework] = total_time
             logger.info(f"[{idx}/{total}] ✅ {name}: {total_time:.1f}h")
     except Exception as e:
         logger.error(f"Error {name}: {e}")
@@ -345,17 +382,32 @@ def calculate_time_spent(start_date, end_date):
             for f in as_completed(futures):
                 r = f.result()
                 with results_lock:
-                    for l, t in r['language_times'].items(): lang_total[l] += t
-                    for fw, t in r['framework_times'].items(): fw_total[fw] += t
+                    for lang, time_val in r['language_times'].items():
+                        lang_total[lang] += time_val
+                    for framework, time_val in r['framework_times'].items():
+                        fw_total[framework] += time_val
         current = chunk_end
     return lang_total, fw_total
 
 # ===== UI & EXPORT =====
 def format_time(hours):
-    return f'{int(hours)} hrs {int((hours % 1) * 60)} mins'
+    """Formats decimal hours into 'D days H hrs M mins'"""
+    d = int(hours // 24)
+    h = int(hours % 24)
+    m = int((hours % 1) * 60)
+    
+    parts = []
+    if d > 0:
+        parts.append(f"{d} {'days' if d > 1 else 'day'}")
+    if h > 0 or d > 0:
+        parts.append(f"{h} hrs")
+    parts.append(f"{m} mins")
+    return " ".join(parts) if parts else "0 mins"
 
 def create_text_graph(percent):
-    return '█' * int(20 * percent / 100) + '░' * (20 - int(20 * percent / 100))
+    length = 20
+    filled = int(length * percent / 100)
+    return '█' * filled + '░' * (length - filled)
 
 def update_readme(lang_times, fw_times, start, end):
     total = sum(lang_times.values())
@@ -365,25 +417,27 @@ def update_readme(lang_times, fw_times, start, end):
     content = '```typescript\nCoding Time Tracker🙆‍♂️\n\n'
     content += f'Period: {start.strftime("%d %b %Y")} - {end.strftime("%d %b %Y")}\n'
     content += f'Total Time: {format_time(total)}\n\n💻 Languages:\n'
-    for l, t in sorted_langs:
-        p = (t / total * 100) if total > 0 else 0
-        content += f'{l:<15} {format_time(t):<15} {create_text_graph(p)} {p:>6.2f} %\n'
+    for lang, time_val in sorted_langs:
+        p = (time_val / total * 100) if total > 0 else 0
+        content += f'{lang:<15} {format_time(time_val):<20} {create_text_graph(p)} {p:>6.2f} %\n'
     
     if sorted_fws:
         content += '\n⚡ Frameworks:\n'
-        for f, t in sorted_fws:
-            p = (t / total * 100) if total > 0 else 0
-            content += f'{f:<15} {format_time(t):<15} {create_text_graph(p)} {p:>6.2f} %\n'
+        for framework, time_val in sorted_fws:
+            p = (time_val / total * 100) if total > 0 else 0
+            content += f'{framework:<15} {format_time(time_val):<20} {create_text_graph(p)} {p:>6.2f} %\n'
     content += '```\n'
 
     marker_s, marker_e = '<!-- language_times_start -->', '<!-- language_times_end -->'
     if os.path.exists(README_FILE):
-        with open(README_FILE, 'r') as f: text = f.read()
+        with open(README_FILE, 'r') as f:
+            text = f.read()
         if marker_s in text:
             text = text.split(marker_s)[0] + marker_s + '\n' + content + marker_e + text.split(marker_e)[1]
         else:
             text += f'\n{marker_s}\n{content}{marker_e}'
-        with open(README_FILE, 'w') as f: f.write(text)
+        with open(README_FILE, 'w') as f:
+            f.write(text)
 
 def main():
     start_date = datetime.strptime(START_DATE, "%d %B %Y").replace(tzinfo=pytz.UTC)
