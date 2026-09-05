@@ -29,19 +29,19 @@ Bagus Erwanto, a tech enthusiast fresh out of Universitas Duta Bangsa Surakarta.
 ```typescript
 Coding Time Tracker🙆‍♂️
 
-Period: 01 Mar 2022 - 04 Sep 2026
+Period: 01 Mar 2022 - 05 Sep 2026
 Total Time: 4382 hrs 26 mins
 
 💻 Languages (Mastery Level):
-TypeScript      1500 hrs 43 mins     █████████████████████████ 133.04 %
-JavaScript      915 hrs 10 mins      ███████████████░░░░░░░░░░  81.13 %
-C++             718 hrs 27 mins      ███████████░░░░░░░░░░░░░░  63.69 %
-Python          597 hrs 46 mins      █████████░░░░░░░░░░░░░░░░  52.99 %
-HTML            232 hrs 47 mins      ███░░░░░░░░░░░░░░░░░░░░░░  20.64 %
-Vue             108 hrs 24 mins      █░░░░░░░░░░░░░░░░░░░░░░░░   9.61 %
+TypeScript      1500 hrs 43 mins     █████████████████████████ 132.96 %
+JavaScript      915 hrs 10 mins      ███████████████░░░░░░░░░░  81.08 %
+C++             718 hrs 27 mins      ███████████░░░░░░░░░░░░░░  63.66 %
+Python          597 hrs 46 mins      █████████░░░░░░░░░░░░░░░░  52.96 %
+HTML            232 hrs 47 mins      ███░░░░░░░░░░░░░░░░░░░░░░  20.63 %
+Vue             108 hrs 24 mins      █░░░░░░░░░░░░░░░░░░░░░░░░   9.60 %
 CSS             101 hrs 24 mins      █░░░░░░░░░░░░░░░░░░░░░░░░   8.99 %
-Go              83 hrs 20 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   7.39 %
-Java            59 hrs 50 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   5.31 %
+Go              83 hrs 20 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   7.38 %
+Java            59 hrs 50 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   5.30 %
 Rust            29 hrs 0 mins        █░░░░░░░░░░░░░░░░░░░░░░░░   2.57 %
 Shell           15 hrs 6 mins        █░░░░░░░░░░░░░░░░░░░░░░░░   1.34 %
 PHP             12 hrs 17 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   1.09 %
@@ -49,16 +49,16 @@ Dockerfile      6 hrs 28 mins        █░░░░░░░░░░░░░�
 Kotlin          1 hrs 35 mins        █░░░░░░░░░░░░░░░░░░░░░░░░   0.14 %
 
 ⚡ Frameworks (Mastery Level):
-React           755 hrs 40 mins      ████████████░░░░░░░░░░░░░  66.99 %
-Express.js      717 hrs 27 mins      ███████████░░░░░░░░░░░░░░  63.60 %
-Tailwind CSS    587 hrs 18 mins      █████████░░░░░░░░░░░░░░░░  52.07 %
-React Native    339 hrs 36 mins      █████░░░░░░░░░░░░░░░░░░░░  30.11 %
-Next.js         274 hrs 0 mins       ████░░░░░░░░░░░░░░░░░░░░░  24.29 %
-Supabase        211 hrs 58 mins      ███░░░░░░░░░░░░░░░░░░░░░░  18.79 %
-Vue.js          198 hrs 51 mins      ███░░░░░░░░░░░░░░░░░░░░░░  17.63 %
-Vite            142 hrs 2 mins       ██░░░░░░░░░░░░░░░░░░░░░░░  12.59 %
-Jest            88 hrs 58 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   7.89 %
-FastAPI         66 hrs 51 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   5.93 %
+React           755 hrs 40 mins      ████████████░░░░░░░░░░░░░  66.95 %
+Express.js      717 hrs 27 mins      ███████████░░░░░░░░░░░░░░  63.57 %
+Tailwind CSS    587 hrs 18 mins      █████████░░░░░░░░░░░░░░░░  52.04 %
+React Native    339 hrs 36 mins      █████░░░░░░░░░░░░░░░░░░░░  30.09 %
+Next.js         274 hrs 0 mins       ████░░░░░░░░░░░░░░░░░░░░░  24.28 %
+Supabase        211 hrs 58 mins      ███░░░░░░░░░░░░░░░░░░░░░░  18.78 %
+Vue.js          198 hrs 51 mins      ███░░░░░░░░░░░░░░░░░░░░░░  17.62 %
+Vite            142 hrs 2 mins       ██░░░░░░░░░░░░░░░░░░░░░░░  12.58 %
+Jest            88 hrs 58 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   7.88 %
+FastAPI         66 hrs 51 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   5.92 %
 Axum            48 hrs 50 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   4.33 %
 Serde           48 hrs 50 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   4.33 %
 Tokio           48 hrs 50 mins       █░░░░░░░░░░░░░░░░░░░░░░░░   4.33 %
